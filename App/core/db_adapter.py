@@ -35,7 +35,7 @@ class DBAdapter:
 
     def __init__(self, decorated):
         self._decorated = decorated
-        self.conn = psycopg2.connect(database="testdb", user="postgres", password="pass123", host="127.0.0.1", port="5432")
+        self.conn = psycopg2.connect(database="pvulpix", user="postgres", password="", host="127.0.0.1", port="5432")
 
     def Instance(self):
         """
@@ -55,3 +55,10 @@ class DBAdapter:
 
     def __instancecheck__(self, inst):
         return isinstance(inst, self._decorated)
+
+    def new_process(self, url, stype, status):
+        cur = self.conn.cursor()
+        cur.callproc("new_process", [url, stype, status])
+        cur.close()
+        self.conn.commit()
+        self.conn.close()
