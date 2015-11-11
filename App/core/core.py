@@ -55,5 +55,5 @@ class Core:
             for module, status in self.modules:
                 if status:
                     # http://stackoverflow.com/questions/4230725/how-to-execute-a-python-script-file-with-an-argument-from-inside-another-python
-                    result = os.system(os.getcwd() + "/modules/" + module, URL(self.url))
+                    result = os.system(os.getcwd() + "/modules/" + module + "/module.py", URL(self.url))
                     self.results[module] = result
