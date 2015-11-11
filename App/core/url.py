@@ -9,7 +9,6 @@ class URL:
         self.url = url
         from http.client import HTTPConnection
         conn = HTTPConnection(self.url)
-        conn.request('HEAD', '/')
         code = conn.getresponse().getcode()
 
         if code == 200:
@@ -17,8 +16,13 @@ class URL:
         else:
             self.online = False
 
+        self.content = conn.getresponse().read()
+
     def get_url(self):
         return self.url
 
     def is_online(self):
         return self.online
+
+    def get_content(self):
+        return self.content
