@@ -16,15 +16,14 @@ class IncorrectSecurity(object):
             url = self.urls.get_url()
             if url is None:
                 break
-            soup = BeautifulSoup(url)
+            soup = BeautifulSoup(url.get_url())
             forms = soup('form')
-            status = False
             for form in forms:
                 inputs = BeautifulSoup(form).soup('input')
                 for input in inputs:
                     type = input.get("type")
                     if type == "hidden":
-                        # if there is a hash
-                        status = True
-                        break
-            return status
+                        name = input.get("name")
+                        if name == "hash":
+                            return True
+        return False
