@@ -5,6 +5,14 @@ angular.module('myApp.signinCtrl', []).
     if (oldUsr)
         $location.path("/profile");
 
+    /* Hiding the warning DIVs. */
+    $scope.in_data = true;
+    $scope.in_impossible = true;
+
+    $scope.up_data = true;
+    $scope.up_pass = true;
+    $scope.up_impossible = true;
+
     $scope.signin = function() {
         var name = $scope.user === undefined ? null : $scope.user;
         var pass = $scope.pass === undefined ? null : $scope.pass;
@@ -21,11 +29,11 @@ angular.module('myApp.signinCtrl', []).
                     localStorage.setItem("user", JSON.stringify(user));
                     $location.path("/main");
                 } else {
-                    ;
+                    $scope.in_impossible = false;
                 }
             });
         } else {
-            ;
+            $scope.in_data = false;
         }
     }
 
@@ -51,14 +59,14 @@ angular.module('myApp.signinCtrl', []).
                         localStorage.setItem("user", JSON.stringify(user));
                         $location.path("/profile");
                     } else { // Mostrar pop up.
-                        ;
+                        $scope.up_impossible = false;
                     }
                 });
 	        } else { // Nuevas contraseñas no coinciden.
-	        	;
+	        	$scope.up_pass = false;
 	        }
         } else { // Algún campo vacío.
-	        ;
+	        $scope.up_data = false;
         }
     }
 });

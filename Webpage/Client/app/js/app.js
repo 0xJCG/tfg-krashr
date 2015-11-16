@@ -1,6 +1,6 @@
 'use strict';
  
-angular.module('myApp', ['ngRoute', 'myApp.mainCtrl', 'myApp.profileCtrl', 'myApp.searchesCtrl', 'myApp.signinCtrl']).
+angular.module('myApp', ['ngRoute', 'myApp.mainCtrl', 'myApp.profileCtrl', 'myApp.searchesCtrl', 'myApp.signinCtrl', 'myApp.passwordCtrl']).
 
 config(['$routeProvider', function($routeProvider) {
     $routeProvider.
@@ -26,7 +26,7 @@ config(['$routeProvider', function($routeProvider) {
         }).
         when('/updatepassword', {
             templateUrl: 'templates/updatepassword.html',
-            controller: 'ProfileCtrl'
+            controller: 'PasswordCtrl'
         }).
         otherwise({
             redirectTo: '/main'

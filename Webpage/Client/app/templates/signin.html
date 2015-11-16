@@ -6,15 +6,21 @@
 <div class="container">
     <div class="col-md-5">
         <h1>Sign in</h1>
+        <div class="alert alert-warning" ng-hide="in_data">
+            All the required data is not inserted.
+        </div>
+        <div class="alert alert-danger" ng-hide="in_impossible">
+            Impossible to sign in.
+        </div>
         <form class="form-horizontal">
             <div class="form-group">
                 <div class="col-sm-12">
-                    <input type="text" class="form-control" id="user" placeholder="Username">
+                    <input type="text" class="form-control" id="user" placeholder="Username" required="">
                 </div>
             </div>
             <div class="form-group">
                 <div class="col-sm-12">
-                    <input type="password" class="form-control" id="pass" placeholder="Password">
+                    <input type="password" class="form-control" id="pass" placeholder="Password" required="">
                 </div>
             </div>
             <div class="form-group">
@@ -29,11 +35,20 @@
     </div>
     <div class="col-md-5">
         <h1>Sign up</h1>
+        <div class="alert alert-warning" ng-hide="up_data">
+            All the required data is not inserted.
+        </div>
+        <div class="alert alert-warning" ng-hide="up_pass">
+            The passwords don't match.
+        </div>
+        <div class="alert alert-danger" ng-hide="up_impossible">
+            Impossible to sign up.
+        </div>
         <form id="signupform" class="form-horizontal" role="form">
             <div class="form-group">
                 <div class="col-md-12">
                     <div class="input-group">
-                        <input type="text" class="form-control" id="username" name="user" placeholder="Username">
+                        <input type="text" class="form-control" id="username" name="user" placeholder="Username" required="">
                         <span class="input-group-btn">
                             <button class="btn btn-default" type="submit">?</button>
                         </span>
@@ -43,7 +58,7 @@
             <div class="form-group">
                 <div class="col-md-12">
                     <div class="input-group">
-                        <input type="text" class="form-control" id="email" name="email" placeholder="Email">
+                        <input type="text" class="form-control" id="email" name="email" placeholder="Email" required="">
                         <span class="input-group-btn">
                             <button class="btn btn-default" type="submit">?</button>
                         </span>
@@ -53,7 +68,7 @@
             <div class="form-group">
                 <div class="col-md-12">
                     <div class="input-group">
-                        <input type="text" class="form-control" id="firstname" name="firstname" placeholder="First name">
+                        <input type="text" class="form-control" id="firstname" name="firstname" placeholder="First name" required="">
                         <span class="input-group-btn">
                             <button class="btn btn-default" type="submit">?</button>
                         </span>
@@ -63,7 +78,7 @@
             <div class="form-group">
                 <div class="col-md-12">
                     <div class="input-group">
-                        <input type="text" class="form-control" id="lastname" name="lastname" placeholder="Last name">
+                        <input type="text" class="form-control" id="lastname" name="lastname" placeholder="Last name" required="">
                         <span class="input-group-btn">
                             <button class="btn btn-default" type="submit">?</button>
                         </span>
@@ -73,7 +88,7 @@
             <div class="form-group">
                 <div class="col-md-12">
                     <div class="input-group">
-                        <input type="password" class="form-control" id="password" name="password" placeholder="Password">
+                        <input type="password" class="form-control" id="password" name="password" placeholder="Password" required="">
                         <span class="input-group-btn">
                             <button class="btn btn-default" type="submit">?</button>
                         </span>
@@ -83,7 +98,7 @@
             <div class="form-group">
                 <div class="col-md-12">
                     <div class="input-group">
-                        <input type="password" class="form-control" id="password2" name="password2" placeholder="Retype the password">
+                        <input type="password" class="form-control" id="password2" name="password2" placeholder="Retype the password" required="">
                         <span class="input-group-btn">
                             <button class="btn btn-default" type="submit">?</button>
                         </span>
@@ -92,7 +107,7 @@
             </div>
             <div class="form-group">
                 <div class="col-md-offset-0 col-md-12">
-                    <button id="btn-signup" type="button" class="btn btn-info" ng-click="signup()>Sign up</button>
+                    <button id="btn-signup" type="button" class="btn btn-info" ng-click="signup()">Sign up</button>
                 </div>
             </div>
         </form>

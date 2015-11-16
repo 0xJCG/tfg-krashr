@@ -1,11 +1,14 @@
 <div class="jumbotron" style="padding-bottom:0px;">
     <div class="container">
         <h1>Project Vulpix</h1>
+        <div class="alert alert-danger" ng-hide="web">
+            You have to be signed in to search for vulnerabilities.
+        </div>
         <form class="form-vulsearch" role="form">
             <div class="input-group">
                 <input type="text" class="form-control" placeholder="URL to search for vulnerabilities..." required="" autofocus="">
                 <span class="input-group-btn">
-                    <button class="btn btn-default" type="submit">Search!</button>
+                    <button class="btn btn-default" type="button" ng-click="search()">Search!</button>
                 </span>
             </div>
         </form>
