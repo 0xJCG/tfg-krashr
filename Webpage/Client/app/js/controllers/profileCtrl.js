@@ -4,7 +4,7 @@ angular.module('myApp.profileCtrl', []).
     if (!localStorage.getItem("user"))
         $location.path("/signin");
 
-	// $scope.profile();
+	$scope.getProfile();
 
     $scope.getProfile = function() {
         var user = JSON.parse(localStorage.getItem('user'));

@@ -4,9 +4,15 @@
         <div class="alert alert-danger" ng-hide="web">
             You have to be signed in to search for vulnerabilities.
         </div>
+        <div class="alert alert-danger" ng-hide="problem">
+            There is a problem, try the search later.
+        </div>
+        <div class="alert alert-warning" ng-hide="wrong">
+            The URL is not right.
+        </div>
         <form class="form-vulsearch" role="form">
             <div class="input-group">
-                <input type="text" class="form-control" placeholder="URL to search for vulnerabilities..." required="" autofocus="">
+                <input type="text" class="form-control" placeholder="URL to search for vulnerabilities..." ng-model="websearch" required="" autofocus="">
                 <span class="input-group-btn">
                     <button class="btn btn-default" type="button" ng-click="search()">Search!</button>
                 </span>
