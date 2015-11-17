@@ -1,10 +1,14 @@
 angular.module('myApp.profileCtrl', []).
     controller('ProfileCtrl', function($scope, $location, restClient) {
 
+    /* Hiding the warning DIVs. */
+    $scope.pass = true;
+    $scope.impossible = true;
+
     if (!localStorage.getItem("user"))
         $location.path("/signin");
 
-	$scope.getProfile();
+	//$scope.getProfile();
 
     $scope.getProfile = function() {
         var user = JSON.parse(localStorage.getItem('user'));
@@ -13,6 +17,12 @@ angular.module('myApp.profileCtrl', []).
                 ;
             else
                 ;
-		 });
-	 }
+        });
+    }
+
+    $scope.signOut = function() {
+        localStorage.removeItem('user');
+        localStorage.clear();
+        $location.path('/signin');
+    }
 });

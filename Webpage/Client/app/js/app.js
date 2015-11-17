@@ -1,6 +1,6 @@
 'use strict';
  
-angular.module('myApp', ['ngRoute', 'myApp.mainCtrl', 'myApp.profileCtrl', 'myApp.searchesCtrl', 'myApp.signinCtrl', 'myApp.passwordCtrl']).
+angular.module('myApp', ['ngRoute', 'myApp.services', 'myApp.mainCtrl', 'myApp.profileCtrl', 'myApp.searchesCtrl', 'myApp.signinCtrl', 'myApp.passwordCtrl']).
 
 config(['$routeProvider', function($routeProvider) {
     $routeProvider.

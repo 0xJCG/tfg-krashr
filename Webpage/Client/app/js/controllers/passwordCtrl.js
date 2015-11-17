@@ -40,4 +40,4 @@ angular.module('myApp.passwordCtrl', []).
             $scope.data = false;
         }
     }
-}
+});
