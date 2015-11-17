@@ -30,10 +30,12 @@ angular.module('myApp.signinCtrl', []).
                     $location.path("/main");
                 } else {
                     $scope.in_impossible = false;
+                    $scope.in_data = true;
                 }
             });
         } else {
             $scope.in_data = false;
+            $scope.in_impossible = true;
         }
     }
 
@@ -60,13 +62,19 @@ angular.module('myApp.signinCtrl', []).
                         $location.path("/profile");
                     } else { // Mostrar pop up.
                         $scope.up_impossible = false;
+                        $scope.up_data = true;
+                        $scope.up_pass = true;
                     }
                 });
 	        } else { // Nuevas contraseñas no coinciden.
 	        	$scope.up_pass = false;
+	        	$scope.up_data = true;
+                $scope.up_impossible = true;
 	        }
         } else { // Algún campo vacío.
 	        $scope.up_data = false;
+            $scope.up_pass = true;
+            $scope.up_impossible = true;
         }
     }
 });

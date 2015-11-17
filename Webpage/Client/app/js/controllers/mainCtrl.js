@@ -7,20 +7,26 @@ angular.module('myApp.mainCtrl', []).
     $scope.problem = true;
 
     $scope.search = function() {
-        if (!localStorage.getItem("user"))
+        if (!localStorage.getItem("user")) {
             $scope.web = false;
-        else {
+            $scope.wrong = true;
+            $scope.problem = true;
+        } else {
             var user = JSON.parse(localStorage.getItem("user"));
             var web = $scope.websearch;
-            if (!isUrl(web))
+            if (!isUrl(web)) {
                 $scope.wrong = false;
-            else {
+                $scope.web = true;
+                $scope.problem = true;
+            } else {
                 restClient.search(user.name, user.pass, web).
                 then(function(searching) {
                     if (searching) {
-                        ;
+                        $location.path("/nowsearching");
                     } else {
                         $scope.problem = false;
+                        $scope.web = true;
+                        $scope.problem = true;
                     }
                 });
             }

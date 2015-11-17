@@ -91,3 +91,20 @@ exports.signUp = function(request, response) {
 		}
 	});
 };
+
+exports.getUserInfo = function(request, response) {
+	var b = request.body;
+
+	User.findOne({USERNAME: b.USERNAME}, function(error, user) { // The new user must not exist already.
+		if (error) {
+			response.status(500).send();
+		} else { // The user doesn't exist.
+		    User.findOne({USERNAME: b.USERNAME}, function(error, user) { // Searching the user to check the password.
+			if (user.PASSWORD == b.PASSWORD) { // If the passwords are the same...
+				response.status(200).send(user); // ...we send a 200 OK code with the result requested.
+			} else
+				response.status(500).send(); // ...we send an 500 error code.
+			});
+		}
+	});
+};

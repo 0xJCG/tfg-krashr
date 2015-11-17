@@ -62,4 +62,17 @@ angular.module('myApp.services', [])
 
 		return(promise);
 	}
+
+	this.getUserInfo = function(USERNAME, PASSWORD) {
+		var request = new Object();
+
+		request.USERNAME = USERNAME;
+		request.PASSWORD = PASSWORD;
+
+		var promise = $http.post(direction + '/getUserInfo', request).success(function(validation) {
+			return(validation);
+		});
+
+		return(promise);
+	}
 });
