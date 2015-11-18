@@ -15,12 +15,12 @@
         <form class="form-horizontal">
             <div class="form-group">
                 <div class="col-sm-12">
-                    <input type="text" class="form-control" id="user" placeholder="Username" ng-model="user" required="">
+                    <input type="text" class="form-control" id="user" placeholder="Username" ng-model="user" required="required">
                 </div>
             </div>
             <div class="form-group">
                 <div class="col-sm-12">
-                    <input type="password" class="form-control" id="pass" placeholder="Password" ng-model="pass" required="">
+                    <input type="password" class="form-control" id="pass" placeholder="Password" ng-model="pass" required="required">
                 </div>
             </div>
             <div class="form-group">
@@ -41,6 +41,9 @@
         <div class="alert alert-warning" ng-hide="up_pass">
             The passwords don't match.
         </div>
+        <div class="alert alert-warning" ng-hide="up_email">
+            The email is not valid.
+        </div>
         <div class="alert alert-danger" ng-hide="up_impossible">
             Impossible to sign up.
         </div>
@@ -48,7 +51,7 @@
             <div class="form-group">
                 <div class="col-md-12">
                     <div class="input-group">
-                        <input type="text" class="form-control" id="username" name="user" placeholder="Username" ng-model="username" required="">
+                        <input type="text" class="form-control" id="username" name="user" placeholder="Username" ng-model="username" required="required">
                         <span class="input-group-btn">
                             <button class="btn btn-default" type="submit">?</button>
                         </span>
@@ -58,7 +61,7 @@
             <div class="form-group">
                 <div class="col-md-12">
                     <div class="input-group">
-                        <input type="text" class="form-control" id="email" name="email" placeholder="Email" ng-model="email" required="">
+                        <input type="text" class="form-control" id="email" name="email" placeholder="Email" ng-model="email" required="required">
                         <span class="input-group-btn">
                             <button class="btn btn-default" type="submit">?</button>
                         </span>
@@ -68,7 +71,7 @@
             <div class="form-group">
                 <div class="col-md-12">
                     <div class="input-group">
-                        <input type="text" class="form-control" id="firstname" name="firstname" placeholder="First name" ng-model="firstname" required="">
+                        <input type="text" class="form-control" id="firstname" name="firstname" placeholder="First name" ng-model="firstname" required="required">
                         <span class="input-group-btn">
                             <button class="btn btn-default" type="submit">?</button>
                         </span>
@@ -78,7 +81,7 @@
             <div class="form-group">
                 <div class="col-md-12">
                     <div class="input-group">
-                        <input type="text" class="form-control" id="lastname" name="lastname" placeholder="Last name" ng-model="lastname" required="">
+                        <input type="text" class="form-control" id="lastname" name="lastname" placeholder="Last name" ng-model="lastname" required="required">
                         <span class="input-group-btn">
                             <button class="btn btn-default" type="submit">?</button>
                         </span>
@@ -88,7 +91,7 @@
             <div class="form-group">
                 <div class="col-md-12">
                     <div class="input-group">
-                        <input type="password" class="form-control" id="password" name="password" placeholder="Password" ng-model="password" required="">
+                        <input type="password" class="form-control" id="password" name="password" placeholder="Password" ng-model="password" required="required">
                         <span class="input-group-btn">
                             <button class="btn btn-default" type="submit">?</button>
                         </span>
@@ -98,7 +101,7 @@
             <div class="form-group">
                 <div class="col-md-12">
                     <div class="input-group">
-                        <input type="password" class="form-control" id="password2" name="password2" placeholder="Retype the password" ng-model="password2" required="">
+                        <input type="password" class="form-control" id="password2" name="password2" placeholder="Retype the password" ng-model="password2" required="required">
                         <span class="input-group-btn">
                             <button class="btn btn-default" type="submit">?</button>
                         </span>

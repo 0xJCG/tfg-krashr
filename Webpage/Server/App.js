@@ -32,13 +32,15 @@ var resultController = require("./controllers/resultController.js");
 var router = express.Router();
 app.use(router);
 
-router.route('/login').post(userController.signIn);
+router.route('/signin').post(userController.signIn);
 router.route('/signup').post(userController.signUp);
-router.route('/user').post(userController.updateUserInfo);
-router.route('/changepass').post(userController.updatePassword);
+router.route('/updateprofile').post(userController.updateUserInfo);
+router.route('/updatepassword').post(userController.updatePassword);
+router.route('/getprofile').post(userController.getUserInfo);
 
 router.route('/results/:process').post(resultController.getResult);
 router.route('/results').post(resultController.getAllResults);
+router.route('/search').post(resultController.search);
 
 // Starting server
 app.listen(3000, function() {

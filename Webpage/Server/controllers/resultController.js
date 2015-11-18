@@ -33,6 +33,17 @@ exports.getResult = function(request, response) {
 	});
 };
 
+exports.search = function(request, response) {
+	var b = request.body; // Getting the data from the request.
+
+	User.findOne({USERNAME: b.USERNAME}, function(error, user) { // Searching the user to check the password.
+		if (user.PASSWORD == b.PASSWORD) { // If the passwords are the same...
+			response.status(200).send(true);
+		} else
+			response.status(200).send(false);
+	});
+};
+
 /*exports.getAllResults = function(request, response) {
 	var b = request.body; // Getting the data from the request.
 

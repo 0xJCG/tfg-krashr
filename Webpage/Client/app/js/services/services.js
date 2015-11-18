@@ -18,12 +18,14 @@ angular.module('myApp.services', [])
 		return(promise);
 	}
 
-	this.signup = function(USERNAME, EMAIL, PASSWORD) {
+	this.signup = function(USERNAME, EMAIL, FIRSTNAME, LASTNAME, PASSWORD) {
 		var request = new Object();
 
 		request.USERNAME = USERNAME;
 		request.PASSWORD = PASSWORD;
 		request.EMAIL = EMAIL;
+		request.FIRSTNAME = FIRSTNAME;
+		request.LASTNAME = LASTNAME;
 
 		var promise = $http.post(direction + '/signup', request).success(function(validation) {
 			return(validation);
@@ -39,14 +41,14 @@ angular.module('myApp.services', [])
 		request.OLD = OLD;
 		request.NEW = NEW;
 
-		var promise = $http.post(direction + '/updatepass', request).success(function(validation) {
+		var promise = $http.post(direction + '/updatepassword', request).success(function(validation) {
 			return(validation);
 		});
 
 		return(promise);
 	}
 
-	this.updateUserInfo = function(USERNAME, PASSWORD, FIRSTNAME, LASTNAME, EMAIL, BIRTHDATE) {
+	this.updateUserInfo = function(USERNAME, PASSWORD, FIRSTNAME, LASTNAME, EMAIL) {
 		var request = new Object();
 
 		request.USERNAME = USERNAME;
@@ -54,9 +56,8 @@ angular.module('myApp.services', [])
 		request.FIRSTNAME = FIRSTNAME;
 		request.LASTNAME = LASTNAME;
 		request.EMAIL = EMAIL;
-		request.BIRTHDATE = BIRTHDATE;
 
-		var promise = $http.post(direction + '/profile', request).success(function(validation) {
+		var promise = $http.post(direction + '/updateprofile', request).success(function(validation) {
 			return(validation);
 		});
 
@@ -69,7 +70,21 @@ angular.module('myApp.services', [])
 		request.USERNAME = USERNAME;
 		request.PASSWORD = PASSWORD;
 
-		var promise = $http.post(direction + '/getUserInfo', request).success(function(validation) {
+		var promise = $http.post(direction + '/getprofile', request).success(function(validation) {
+			return(validation);
+		});
+
+		return(promise);
+	}
+
+	this.search = function(USERNAME, PASSWORD, URL) {
+		var request = new Object();
+
+		request.USERNAME = USERNAME;
+		request.PASSWORD = PASSWORD;
+		request.URL = URL;
+
+		var promise = $http.post(direction + '/getprofile', request).success(function(validation) {
 			return(validation);
 		});
 

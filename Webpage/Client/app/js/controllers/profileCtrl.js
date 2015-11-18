@@ -12,14 +12,17 @@ angular.module('myApp.profileCtrl', []).
 
 	getProfile();
 
-    $scope.getProfile = function() {
+    //$scope.getProfile =
+
+    function getProfile() {
         var user = JSON.parse(localStorage.getItem('user'));
-        restClient.getUserData(user.name, user.pass).then(function(profile) {
-            if (profile) {
-                $scope.user = profile.user;
-                $scope.email = profile.email;
-                $scope.firstname = profile.firstname;
-                $scope.lastname = profile.lastname;
+        restClient.getUserInfo(user.name, user.pass).then(function(profile) {
+            if (profile.data) {
+                var userdata = profile.data;
+                $scope.user = userdata.USERNAME;
+                $scope.email = userdata.EMAIL;
+                $scope.firstname = userdata.NAME;
+                $scope.lastname = userdata.LASTNAME;
             } else
                 $scope.r_impossible = false;
                 $scope.pass = true;
@@ -30,8 +33,9 @@ angular.module('myApp.profileCtrl', []).
 
     $scope.updateProfile = function() {
         var user = JSON.parse(localStorage.getItem('user'));
-        if (user.pass == $scope.password) {
-            restClient.updateUserInfo(user.name, user.pass).then(function(updated) {
+        var pass = sha512($scope.password)
+        if (user.pass == pass) {
+            restClient.updateUserInfo(user.name, user.pass, $scope.email, $scope.firstname, $scope.lastname).then(function(updated) {
                 if (updated) {
                     $scope.successful = false;
                     $scope.pass = true;

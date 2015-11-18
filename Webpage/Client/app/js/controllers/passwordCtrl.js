@@ -9,6 +9,7 @@ angular.module('myApp.passwordCtrl', []).
     $scope.newpass = true;
     $scope.oldpass = true;
     $scope.updatepass = true;
+    $scope.successful = true;
 
     $scope.updatePassword = function() {
         var oldPass = $scope.oldpass;
@@ -21,23 +22,44 @@ angular.module('myApp.passwordCtrl', []).
                 var user = JSON.parse(localStorage.getItem("user"));
 
                 if (oldPass === user.pass) {
-                    restClient.changePass(user.name, oldPass, sha512(newPass)).
+                    restClient.updatePassword(user.name, oldPass, sha512(newPass)).
                     then(function(updated) {
                         if (updated) {
-                            user.pass=sha512(newPass);
+                            user.pass = sha512(newPass);
                             localStorage.setItem("user", JSON.stringify(user));
+                            $scope.data = true;
+                            $scope.newpass = true;
+                            $scope.oldpass = true;
+                            $scope.updatepass = true;
+                            $scope.successful = false;
                         } else {
+                            $scope.data = true;
+                            $scope.newpass = true;
+                            $scope.oldpass = true;
                             $scope.updatepass = false;
+                            $scope.successful = true;
                         }
                     });
                 } else { // Contraseña antigua no coincide.
+                    $scope.data = true;
+                    $scope.newpass = true;
                     $scope.oldpass = false;
+                    $scope.updatepass = true;
+                    $scope.successful = true;
                 }
             } else { // Nuevas contraseñas no coinciden.
+                $scope.data = true;
                 $scope.newpass = false;
+                $scope.oldpass = true;
+                $scope.updatepass = true;
+                $scope.successful = true;
             }
         } else { // Algún campo vacío.
             $scope.data = false;
+            $scope.newpass = true;
+            $scope.oldpass = true;
+            $scope.updatepass = true;
+            $scope.successful = true;
         }
     }
 });
