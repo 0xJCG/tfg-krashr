@@ -13,7 +13,6 @@ exports.getAllResults = function(request, response) {
 			    response.status(200).send(user.RESULTS);
 			else
 			    response.status(200).send(false);
-			}
 		}
 	});
 };
@@ -34,7 +33,7 @@ exports.getResult = function(request, response) {
 	});
 };
 
-exports.getResult = function(request, response) {
+/*exports.getAllResults = function(request, response) {
 	var b = request.body; // Getting the data from the request.
 
 	User.findOne({USERNAME: b.USERNAME}, function(error, user) { // Searching the user to check the password.
@@ -62,4 +61,4 @@ exports.getResult = function(request, response) {
 		} else
 			response.status(500).send(); // ...we send an 500 error code.
 	});
-};
+};*/

@@ -24,7 +24,7 @@ app.use(methodOverride());
 
 // Importing models and controllers
 var userModel = require("./models/user.js")(app,mongoose);
-var resultModel = require("./models/results.js")(app,mongoose);
+var resultModel = require("./models/result.js")(app,mongoose);
 var userController = require("./controllers/userController.js");
 var resultController = require("./controllers/resultController.js");
 
@@ -32,8 +32,8 @@ var resultController = require("./controllers/resultController.js");
 var router = express.Router();
 app.use(router);
 
-router.route('/login').post(userController.login);
-router.route('/signup').post(userController.signup);
+router.route('/login').post(userController.signIn);
+router.route('/signup').post(userController.signUp);
 router.route('/user').post(userController.updateUserInfo);
 router.route('/changepass').post(userController.updatePassword);
 

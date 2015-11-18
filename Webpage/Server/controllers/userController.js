@@ -1,7 +1,7 @@
 var mongoose = require('mongoose'),
 	User = mongoose.model('User');
 
-exports.login = function(request, response) {
+exports.signIn = function(request, response) {
 	var b = request.body; // Getting the data from the request.
 	
 	User.findOne({USERNAME: b.USERNAME}, function(error, user) { // Searching the user is in the database.
@@ -87,7 +87,7 @@ exports.signUp = function(request, response) {
                     });
 			    } else
 				    response.status(200).send(false);
-		    }
+		    });
 		}
 	});
 };
