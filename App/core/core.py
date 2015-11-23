@@ -16,11 +16,20 @@ __author_email__ = "Jonathan Castro, jonathancastrogonzalez at gmail dot com"
 from .url import URL
 import json
 import os
+from jsonschema import validate
+
+schema = {
+    "type": "object",
+    "properties": {
+        "user": {"type": "string"},
+        "url": {"type": "string"},
+        "search": {"type": "string"}
+    }
+}
 
 class Core:
 
-    def __init__(self, call):
-        self.__check_call(call)
+    def __init__(self):
         self.url = ""
         self.action = 0
         self.modules = {}
@@ -46,14 +55,25 @@ class Core:
                 self.modules[name] = False
 
     def __check_call(self, call):
-        data = json.load(call)
-        self.url = data["url"]
-        self.action = data["action"]
+        try:
+            validate(call, schema)
+        except:
+            return False
+        else:
+            data = json.load(call)
+            self.url = data["url"]
+            self.action = data["action"]
+        return True
 
-    def start(self):
-        if self.__is_valid_url():
-            for module, status in self.modules:
-                if status:
-                    # http://stackoverflow.com/questions/4230725/how-to-execute-a-python-script-file-with-an-argument-from-inside-another-python
-                    result = os.system(os.getcwd() + "/modules/" + module + "/module.py", URL(self.url))
-                    self.results[module] = result
+    def start(self, call):
+        if self.__check_call(call):
+            if self.__is_valid_url():
+                for module, status in self.modules:
+                    if status:
+                        # http://stackoverflow.com/questions/4230725/how-to-execute-a-python-script-file-with-an-argument-from-inside-another-python
+                        result = os.system(os.getcwd() + "/modules/" + module + "/module.py", URL(self.url))
+                        self.results[module] = result
+            else:
+                return False
+        else:
+            return False
