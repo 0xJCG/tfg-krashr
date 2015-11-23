@@ -1,9 +1,10 @@
 exports = module.exports = function(app, mongoose) {
 	var Schema = mongoose.Schema;
 	var resultSchema = new Schema({
-		PROCESS: {type:Schema.Types.ObjectId, ref:'Result', required:true},
+		PROCESS: {type:String, required:true},
 		WEB: {type:String, required:true},
-		USER: String
+		VULNERABILITY: {type:String, required:true},
+		USER: {PROCESS: {type:Schema.Types.ObjectId, ref:'User', required:true}}
 		});
 	mongoose.model('Result', resultSchema);
 };
