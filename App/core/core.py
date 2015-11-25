@@ -14,9 +14,12 @@ __author__ = "Jonathan Castro"
 __author_email__ = "Jonathan Castro, jonathancastrogonzalez at gmail dot com"
 
 from .url import URL
+from .db_adapter import DBAdapter
 import json
 import os
 from jsonschema import validate
+import requests
+from threading import Thread
 
 schema = {
     "type": "object",
@@ -26,6 +29,8 @@ schema = {
         "search": {"type": "string"}
     }
 }
+
+api = "http://localhost:3000"
 
 class Core:
 
@@ -40,7 +45,7 @@ class Core:
         regex = re.compile(
             r'^https?://'  # http:// or https://
             r'(?:(?:[A-Z0-9](?:[A-Z0-9-]{0,61}[A-Z0-9])?\.)+[A-Z]{2,6}\.?|'  # domain...
-            r'\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3})' # ...or ip
+            r'\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3})'  # ...or ip
             r'(?::\d+)?'  # optional port
             r'(?:/?|[/?]\S+)$', re.IGNORECASE)
         return self.url is not None and regex.search(self.url)
@@ -68,11 +73,18 @@ class Core:
     def start(self, call):
         if self.__check_call(call):
             if self.__is_valid_url():
+                db = DBAdapter
+                process, web = db.new_process(self.url, 1, "searching")
                 for module, status in self.modules:
                     if status:
                         # http://stackoverflow.com/questions/4230725/how-to-execute-a-python-script-file-with-an-argument-from-inside-another-python
                         result = os.system(os.getcwd() + "/modules/" + module + "/module.py", URL(self.url))
                         self.results[module] = result
+                        data = '{}'
+                        t = Thread(requests.get(api, data=data))
+                        t.start()
+                        db.vulnerability_found(process, web, module)
+                db.close_connection()
             else:
                 return False
         else:

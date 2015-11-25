@@ -37,7 +37,7 @@ class DBAdapter:
         self._decorated = decorated
         self.conn = psycopg2.connect(database="pvulpix", user="postgres", password="", host="127.0.0.1", port="5432")
 
-    def Instance(self):
+    def instance(self):
         """
         Returns the singleton instance. Upon its first call, it creates a
         new instance of the decorated class and calls its `__init__` method.
@@ -56,9 +56,18 @@ class DBAdapter:
     def __instancecheck__(self, inst):
         return isinstance(inst, self._decorated)
 
-    def new_process(self, url, stype, status):
+    def close_connection(self):
+        self.conn.close()
+
+    def new_process(self, url, s_type, status):
         cur = self.conn.cursor()
-        cur.callproc("new_process", [url, stype, status])
+        process, web = cur.callproc("new_process", [url, s_type, status])
         cur.close()
         self.conn.commit()
-        self.conn.close()
+        return process, web
+
+    def vulnerability_found(self, process, web, v_type):
+        cur = self.conn.cursor()
+        cur.callproc("vulnerability_found", [process, web, v_type])
+        cur.close()
+        self.conn.commit()
