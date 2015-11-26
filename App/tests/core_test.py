@@ -5,6 +5,7 @@ __author__ = "Jonathan Castro"
 __author_email__ = "Jonathan Castro, jonathancastrogonzalez at gmail dot com"
 
 import unittest
+from ..core.core import Core
 
 class TestUM(unittest.TestCase):
 
