@@ -1,4 +1,5 @@
 from .crawler import Crawler
+import sys
 
 __version__ = "0.1"
 __copyright__ = "CopyRight (C) 2015 by Jonathan Castro"
@@ -11,4 +12,4 @@ def main(url):
     return crawler.crawl()
 
 if __name__ == "__main__":
-    main()
+    main(sys.argv[1])

@@ -20,11 +20,12 @@ class Fetcher(object):
         return self.urls[x]
 
     def fetch(self):
+        tags = []
         try:
             content = HTTPConnection(self.url).getresponse().read()
             soup = BeautifulSoup(content)
             tags = soup('a')
-        except HTTPConnection.HTTPException:
+        except HTTPConnection:
             tags = []
         finally:
             for tag in tags:
