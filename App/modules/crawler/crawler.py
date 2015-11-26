@@ -1,4 +1,5 @@
 from .fetcher import Fetcher
+from ...core.url import URL
 from ...core.url_list import URLlist
 
 __version__ = "0.1"
@@ -22,7 +23,7 @@ class Crawler(object):
             if url is None:
                 break
 
-            self.__fetch_urls(url)
+            self.__fetch_urls(url.get_url())
 
         return self.queue.get_visited()
 
@@ -31,4 +32,4 @@ class Crawler(object):
         page.fetch()
 
         for link in page.urls:
-            self.queue.put_url(link)
+            self.queue.put_url(URL(link))

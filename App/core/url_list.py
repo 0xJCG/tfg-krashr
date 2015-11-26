@@ -1,4 +1,5 @@
 from queue import Queue
+from .url import URL
 
 __version__ = "0.1"
 __copyright__ = "CopyRight (C) 2015 by Jonathan Castro"
@@ -19,7 +20,7 @@ class URLlist:
 
     def put_url(self, url):
         if url not in self.visited:
-            self.url_list.put(url)
+            self.url_list.put(URL(url))
             return True
         return False
 
