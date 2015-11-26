@@ -13,7 +13,7 @@ __license__ = "Proprietary"
 __author__ = "Jonathan Castro"
 __author_email__ = "Jonathan Castro, jonathancastrogonzalez at gmail dot com"
 
-from .url import URL
+from .url_list import URLlist
 from .db_adapter import DBAdapter
 import json
 import os
@@ -22,23 +22,31 @@ import requests
 from threading import Thread
 
 schema = {
+    "title": "JSON from API",
     "type": "object",
     "properties": {
         "user": {"type": "string"},
         "url": {"type": "string"},
-        "search": {"type": "string"}
+        "search_options": {
+            "type": "object",
+            "properties": {
+                "number": {"type": "number"},
+                "module": {"type": "string"}
+            }
+        }
     }
 }
 
 api = "http://localhost:3000"
 
 class Core:
-
     def __init__(self):
         self.url = ""
+        self.user = ""
         self.action = 0
         self.modules = {}
         self.results = {}
+        self.url_list = URLlist()
 
     def __is_valid_url(self):
         import re
@@ -66,25 +74,42 @@ class Core:
             return False
         else:
             data = json.load(call)
+            self.user = data["user"]
             self.url = data["url"]
-            self.action = data["action"]
+            self.actions = json.load(data["actions"])
         return True
 
     def start(self, call):
         if self.__check_call(call):
             if self.__is_valid_url():
-                db = DBAdapter
+                db = DBAdapter()
                 process, web = db.new_process(self.url, 1, "searching")
-                for module, status in self.modules:
-                    if status:
-                        # http://stackoverflow.com/questions/4230725/how-to-execute-a-python-script-file-with-an-argument-from-inside-another-python
-                        result = os.system(os.getcwd() + "/modules/" + module + "/module.py", URL(self.url))
-                        self.results[module] = result
-                        data = '{}'
-                        t = Thread(requests.get(api, data=data))
-                        t.start()
-                        db.vulnerability_found(process, web, module)
+                self.url_list.put_url(self.url)
+                for n, m in self.actions:  # Going through the required modules by the API.
+                    if self.modules[m]:  # Looking if the required module is active.
+                        if n == 1:
+                            from ..modules.crawler.module import main
+                            self.url_list = main(self.url)
+                        else:
+                            if n == 2:
+                                from ..modules.sqlinjection.module import main
+                                self.results[m] = main(self.url_list)
+                            elif n == 3:
+                                from ..modules.incorrectsecurity.module import main
+                                self.results[m] = main(self.url_list)
+                            else:
+                                continue
+                            data = {
+                                "PROCESS": process,
+                                "WEB": web,
+                                "VULNERABILITY": self.results[m],
+                                "USER": self.user
+                            }
+                            t = Thread(requests.get(api, data=json.dumps(data)))
+                            t.start()
+                            db.vulnerability_found(process, web, n)
                 db.close_connection()
+                return True
             else:
                 return False
         else:
