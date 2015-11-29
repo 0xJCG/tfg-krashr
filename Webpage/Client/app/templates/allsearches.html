@@ -21,4 +21,11 @@
 
 <div class="container">
     <h1>All searches (Disabled, sorry)</h1>
+    <div class="alert alert-info" ng-hide="searching">
+        Recovering searches information.
+    </div>
+    <div class="alert alert-danger" ng-hide="no_search">
+        Currently, there are no searches executed.
+    </div>
+    <searches></searches>
 </div>

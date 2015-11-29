@@ -21,4 +21,13 @@
 
 <div class="container">
     <h1>Now searching... (Disabled, sorry)</h1>
+    <div class="alert alert-info" ng-hide="searching">
+        Recovering search information.
+    </div>
+    <div class="alert alert-danger" ng-hide="no_search">
+        Currently, there is no search executed.
+    </div>
+    <div class="alert alert-success" ng-hide="search">
+        There is a search executing right now.
+    </div>
 </div>
