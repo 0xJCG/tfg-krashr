@@ -1,8 +1,32 @@
 'use strict';
  
-angular.module('myApp', ['ngRoute', 'myApp.services', 'myApp.mainCtrl', 'myApp.profileCtrl', 'myApp.searchesCtrl', 'myApp.signinCtrl', 'myApp.passwordCtrl']).
+angular.module('myApp', ['ngRoute', 'myApp.services', 'myApp.mainCtrl', 'myApp.profileCtrl', 'myApp.searchesCtrl', 'myApp.nowSearchingCtrl', 'myApp.signinCtrl', 'myApp.passwordCtrl'])
 
-config(['$routeProvider', function($routeProvider) {
+.directive('search',function() {
+	return {
+		templateUrl:'templates/directives/search.html'
+	};
+})
+
+.directive('searches',function() {
+	return {
+		templateUrl:'templates/directives/searches.html'
+	};
+})
+
+.directive('vulnerability',function() {
+	return {
+		templateUrl:'templates/directives/vulnerability.html'
+	};
+})
+
+.directive('vulnerabilities',function() {
+	return {
+		templateUrl:'templates/directives/vulnerabilities.html'
+	};
+})
+
+.config(['$routeProvider', function($routeProvider) {
     $routeProvider.
         when('/allsearches', {
             templateUrl: 'templates/allsearches.html',
@@ -14,7 +38,7 @@ config(['$routeProvider', function($routeProvider) {
         }).
         when('/nowsearching', {
             templateUrl: 'templates/nowsearching.html',
-            controller: 'SearchesCtrl'
+            controller: 'NowSearchingCtrl'
         }).
         when('/profile', {
             templateUrl: 'templates/profile.html',
