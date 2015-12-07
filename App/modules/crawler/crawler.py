@@ -28,7 +28,7 @@ class Crawler(object):
 
     def __fetch_urls(self, url):
         page = Fetcher(url)
-        page.fetch()
+        response = page.fetch()
 
-        for link in page.urls:
+        for link in response:
             self.queue.put_url(URL(link))

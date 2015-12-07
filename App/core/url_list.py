@@ -4,13 +4,13 @@ __license__ = "Proprietary"
 __author__ = "Jonathan Castro"
 __author_email__ = "Jonathan Castro, jonathancastrogonzalez at gmail dot com"
 
-from queue import Queue
+import queue
 
 from App.core.url import URL
 
 class URLlist(object):
     def __init__(self):
-        self.url_list = Queue()
+        self.url_list = queue.Queue()
         self.visited = []
 
     def get_list(self):
@@ -30,7 +30,7 @@ class URLlist(object):
             aux = self.url_list.get()
             self.visited.append(aux)
             return aux
-        except:
+        except queue.Empty:
             return None
 
     def get_visited(self):

@@ -32,3 +32,4 @@ class Fetcher(object):
                 domain = "{0.scheme}://{0.netloc}/".format(urlsplit(href))
                 if href is not None and href not in self.urls and domain == self.domain:
                     self.urls.append(href)
+        return self.urls

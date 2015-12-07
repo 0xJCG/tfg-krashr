@@ -6,15 +6,21 @@ __author_email__ = "Jonathan Castro, jonathancastrogonzalez at gmail dot com"
 
 import unittest
 
-from App.modules.crawler.module import main
+from App.modules.crawler.crawler import Crawler
+from App.modules.crawler.fetcher import Fetcher
 
-class TestUM(unittest.TestCase):
-
+class CrawlerTest(unittest.TestCase):
     def setUp(self):
-        pass
+        self.fetcher = Fetcher("http://pvulpix.hol.es")
+        self.crawler = Crawler("http://pvulpix.hol.es")
 
-    def test_x(self):
-        self.assertEqual(1 == 1, True)
+    # def test_fetch(self):
+    #    self.assertEqual(self.fetcher.fetch(), [])
+
+    def test_crawl(self):
+        from App.core.url import URL
+        url = URL("http://pvulpix.hol.es")
+        self.assertEqual(self.crawler.crawl(), [url])
 
 if __name__ == '__main__':
     unittest.main()

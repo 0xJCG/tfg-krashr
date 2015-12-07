@@ -8,13 +8,15 @@ import unittest
 
 from App.modules.sqlinjection.sql_injection import SQLInjection
 
-class TestUM(unittest.TestCase):
-
+class SQLInjectionTest(unittest.TestCase):
     def setUp(self):
-        pass
+        from App.core.url_list import URLlist
+        url_list = URLlist()
+        url_list.put_url("http://pvulpix.hol.es")
+        self.sqt = SQLInjection(url_list)
 
-    def test_x(self):
-        self.assertEqual(1 == 1, True)
+    def test_search_injections(self):
+        self.assertEqual(self.sqt.search_injections(), False)
 
 if __name__ == '__main__':
     unittest.main()

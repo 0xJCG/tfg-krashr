@@ -8,13 +8,15 @@ import unittest
 
 from App.modules.incorrectsecurity.incorrect_security import IncorrectSecurity
 
-class TestUM(unittest.TestCase):
-
+class IncorrectSecurityTest(unittest.TestCase):
     def setUp(self):
-        pass
+        from App.core.url_list import URLlist
+        url_list = URLlist()
+        url_list.put_url("http://pvulpix.hol.es")
+        self.ict = IncorrectSecurity(url_list)
 
-    def test_x(self):
-        self.assertEqual(1 == 1, True)
+    def test_search_security_flaws(self):
+        self.assertEqual(self.ict.search_security_flaws(), False)
 
 if __name__ == '__main__':
     unittest.main()
