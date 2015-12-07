@@ -5,7 +5,8 @@ __author__ = "Jonathan Castro"
 __author_email__ = "Jonathan Castro, jonathancastrogonzalez at gmail dot com"
 
 import unittest
-from ..modules.incorrectsecurity.module import main
+
+from App.modules.incorrectsecurity.incorrect_security import IncorrectSecurity
 
 class TestUM(unittest.TestCase):
 

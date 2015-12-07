@@ -1,13 +1,14 @@
-from queue import Queue
-from .url import URL
-
 __version__ = "0.1"
 __copyright__ = "CopyRight (C) 2015 by Jonathan Castro"
 __license__ = "Proprietary"
 __author__ = "Jonathan Castro"
 __author_email__ = "Jonathan Castro, jonathancastrogonzalez at gmail dot com"
 
-class URLlist:
+from queue import Queue
+
+from App.core.url import URL
+
+class URLlist(object):
     def __init__(self):
         self.url_list = Queue()
         self.visited = []
@@ -34,3 +35,6 @@ class URLlist:
 
     def get_visited(self):
         return self.visited
+
+if __name__ == '__main__':
+    url_list = URLlist()

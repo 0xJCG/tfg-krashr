@@ -1,29 +1,34 @@
-from bs4 import BeautifulSoup
-
 __version__ = "0.1"
 __copyright__ = "CopyRight (C) 2015 by Jonathan Castro"
 __license__ = "Proprietary"
 __author__ = "Jonathan Castro"
 __author_email__ = "Jonathan Castro, jonathancastrogonzalez at gmail dot com"
 
-class IncorrectSecurity(object):
+from bs4 import BeautifulSoup
 
-    def __init__(self, urls):
-        self.urls = urls
+from App.core.url import URL
+from App.core.url_list import URLlist
+
+class IncorrectSecurity(object):
+    def __init__(self, url_list):
+        if url_list is None:
+            self.url_list = URLlist()
+        else:
+            self.url_list = url_list
 
     def search_security_flaws(self):
         while True:
-            url = self.urls.get_url()
-            if url is None:
+            url = self.url_list.get_url()
+            if url is None or url is not URL:
                 break
-            soup = BeautifulSoup(url.get_url())
+            soup = BeautifulSoup(url.get_content())
             forms = soup('form')
             for form in forms:
                 inputs = BeautifulSoup(form).soup('input')
-                for input in inputs:
-                    type = input.get("type")
-                    if type == "hidden":
-                        name = input.get("name")
+                for i in inputs:
+                    t = i.get("type")
+                    if t == "hidden":
+                        name = i.get("name")
                         if name == "hash":
                             return True
         return False

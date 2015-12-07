@@ -1,15 +1,14 @@
-from http.client import HTTPConnection
-from bs4 import BeautifulSoup
-from urllib.parse import urlsplit
-
 __version__ = "0.1"
 __copyright__ = "CopyRight (C) 2015 by Jonathan Castro"
 __license__ = "Proprietary"
 __author__ = "Jonathan Castro"
 __author_email__ = "Jonathan Castro, jonathancastrogonzalez at gmail dot com"
 
-class Fetcher(object):
+import requests
+from bs4 import BeautifulSoup
+from urllib.parse import urlsplit
 
+class Fetcher(object):
     def __init__(self, url):
         self.url = url
         self.urls = []
@@ -22,10 +21,10 @@ class Fetcher(object):
     def fetch(self):
         tags = []
         try:
-            content = HTTPConnection(self.url).getresponse().read()
-            soup = BeautifulSoup(content)
+            r = requests.get(self.url, allow_redirects=False)
+            soup = BeautifulSoup(r.text)
             tags = soup('a')
-        except HTTPConnection:
+        except requests.exceptions.RequestException:
             tags = []
         finally:
             for tag in tags:

@@ -5,7 +5,8 @@ __author__ = "Jonathan Castro"
 __author_email__ = "Jonathan Castro, jonathancastrogonzalez at gmail dot com"
 
 import unittest
-from ..modules.sqlinjection.module import main
+
+from App.modules.sqlinjection.sql_injection import SQLInjection
 
 class TestUM(unittest.TestCase):
 

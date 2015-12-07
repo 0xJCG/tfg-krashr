@@ -13,13 +13,16 @@ __license__ = "Proprietary"
 __author__ = "Jonathan Castro"
 __author_email__ = "Jonathan Castro, jonathancastrogonzalez at gmail dot com"
 
-from .url_list import URLlist
-from .db_adapter import DBAdapter
 import json
 import os
 from jsonschema import validate
 import requests
 from threading import Thread
+import sys
+
+from App.core.url_list import URLlist
+from App.core.url import URL
+from App.core.db_adapter import DBAdapter
 
 schema = {
     "title": "JSON from API",
@@ -39,7 +42,7 @@ schema = {
 
 api = "http://localhost:3000"
 
-class Core:
+class Core(object):
     def __init__(self):
         self.url = ""
         self.user = ""
@@ -84,18 +87,18 @@ class Core:
             if self.__is_valid_url():
                 db = DBAdapter()
                 process, web = db.new_process(self.url, 1, "searching")
-                self.url_list.put_url(self.url)
+                self.url_list.put_url(URL(self.url))
                 for n, m in self.actions:  # Going through the required modules by the API.
                     if self.modules[m]:  # Looking if the required module is active.
                         if n == 1:
-                            from ..modules.crawler.module import main
-                            self.url_list = main(self.url)
+                            from App.modules.crawler.module import main
+                            self.url_list = main(URL(self.url))
                         else:
                             if n == 2:
-                                from ..modules.sqlinjection.module import main
+                                from App.modules.sqlinjection.module import main
                                 self.results[m] = main(self.url_list)
                             elif n == 3:
-                                from ..modules.incorrectsecurity.module import main
+                                from App.modules.incorrectsecurity.module import main
                                 self.results[m] = main(self.url_list)
                             else:
                                 continue
@@ -114,3 +117,10 @@ class Core:
                 return False
         else:
             return False
+
+def main(petition):
+    core = Core()
+    core.start(petition)
+
+if __name__ == "__main__":
+    main(sys.argv[1])

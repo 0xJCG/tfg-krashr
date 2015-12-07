@@ -1,15 +1,14 @@
-from .fetcher import Fetcher
-from ...core.url import URL
-from ...core.url_list import URLlist
-
 __version__ = "0.1"
 __copyright__ = "CopyRight (C) 2015 by Jonathan Castro"
 __license__ = "Proprietary"
 __author__ = "Jonathan Castro"
 __author_email__ = "Jonathan Castro, jonathancastrogonzalez at gmail dot com"
 
-class Crawler(object):
+from App.core.url import URL
+from App.core.url_list import URLlist
+from App.modules.crawler.fetcher import Fetcher
 
+class Crawler(object):
     def __init__(self, root):
         self.root = root
         self.queue = URLlist()

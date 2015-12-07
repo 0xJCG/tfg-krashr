@@ -5,7 +5,8 @@ __author__ = "Jonathan Castro"
 __author_email__ = "Jonathan Castro, jonathancastrogonzalez at gmail dot com"
 
 import unittest
-from ..modules.crawler.module import main
+
+from App.modules.crawler.module import main
 
 class TestUM(unittest.TestCase):
 
