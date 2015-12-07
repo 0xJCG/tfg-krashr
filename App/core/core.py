@@ -35,9 +35,11 @@ schema = {
             "properties": {
                 "number": {"type": "number"},
                 "module": {"type": "string"}
-            }
+            },
+            "required": ["number", "module"]
         }
-    }
+    },
+    "required": ["user", "url", "search_options"]
 }
 
 api = "http://localhost:3000"
@@ -59,13 +61,15 @@ class Core(object):
             r'\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3})'  # ...or ip
             r'(?::\d+)?'  # optional port
             r'(?:/?|[/?]\S+)$', re.IGNORECASE)
-        return self.url is not None and regex.search(self.url)
+        return self.url is not None and regex.match(self.url) is not None
 
     def __check_modules(self):
-        # http://stackoverflow.com/questions/3207219/how-to-list-all-files-of-a-directory-in-python
-        path = os.getcwd()
-        for name in os.listdir(path + "/modules"):
-            if os.path.exists(os.path.join(path + name, "module.py")):
+        # http://stackoverflow.com/questions/5137497/find-current-directory-and-files-directory
+        path = os.path.dirname(os.getcwd())
+        path = os.path.join(path, "modules")
+        for name in os.listdir(path):
+            folder = os.path.join(path, name)
+            if os.path.exists(os.path.join(folder, "module.py")):
                 self.modules[name] = True
             else:
                 self.modules[name] = False
@@ -76,10 +80,11 @@ class Core(object):
         except:
             return False
         else:
-            data = json.load(call)
-            self.user = data["user"]
-            self.url = data["url"]
-            self.actions = json.load(data["actions"])
+            # data = json.load(call)
+            # self.user = data["user"]
+            # self.url = data["url"]
+            # self.actions = json.load(data["actions"])
+            pass
         return True
 
     def start(self, call):
