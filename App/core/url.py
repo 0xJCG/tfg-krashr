@@ -16,8 +16,10 @@ class URL(object):
 
         if r.status_code == requests.codes.ok:
             self.online = True
+            # self.content = BeautifulSoup(r.text)
+            # self.content = r.text
             aux = BeautifulSoup(r.text)
-            self.content = aux('body')[0]
+            self.content = aux('body')[0]  # Warning! It's a bs4 object.
         else:
             self.online = False
             self.content = None

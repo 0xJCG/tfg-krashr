@@ -19,16 +19,16 @@ class IncorrectSecurity(object):
     def search_security_flaws(self):
         while True:
             url = self.url_list.get_url()
-            if url is None or url is not URL:
+            if url is None or type(url) is not URL:
                 break
-            soup = BeautifulSoup(url.get_content())
-            forms = soup('form')
+            content = url.get_content()
+            forms = content('form')
             for form in forms:
-                inputs = BeautifulSoup(form).soup('input')
+                inputs = form('input')
                 for i in inputs:
                     t = i.get("type")
                     if t == "hidden":
                         name = i.get("name")
                         if name == "hash":
-                            return True
-        return False
+                            return False
+        return True
