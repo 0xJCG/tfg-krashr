@@ -90,9 +90,9 @@ angular.module('myApp.services', [])
 
 		return(promise);
 	}
-});
+})
 
-.service('searchListService',function(){
+.service('searchListService',function() {
 	this.searchList = [];
 	this.vulnerabilityList = [];
 
