@@ -24,7 +24,7 @@ class Fetcher(object):
             r = requests.get(self.url, allow_redirects=False)
             soup = BeautifulSoup(r.text)
             tags = soup('a')
-        except requests.exceptions.RequestException:
+        except requests.RequestException:
             tags = []
         finally:
             for tag in tags:

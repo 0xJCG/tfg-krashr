@@ -4,7 +4,6 @@ __license__ = "Proprietary"
 __author__ = "Jonathan Castro"
 __author_email__ = "Jonathan Castro, jonathancastrogonzalez at gmail dot com"
 
-from App.core.url import URL
 from App.core.url_list import URLlist
 from App.modules.crawler.fetcher import Fetcher
 
