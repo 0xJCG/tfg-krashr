@@ -50,7 +50,7 @@ class SQLInjection(object):
     def search_injections(self):
         while True:
             url = self.url_list.get_url()
-            if url is None or url is not URL:
+            if url is None or type(url) is not URL:
                 break
             self.__signin_attemp(url)
             self.__blind_sqli(url)
@@ -58,11 +58,11 @@ class SQLInjection(object):
         return False
 
     def __signin_attemp(self, url):
-        soup = BeautifulSoup(url.get_content())
+        soup = url.get_content()
         forms = soup('form')
         for form in forms:
             action = form.get("action")
-            inputs = BeautifulSoup(form).soup('input')
+            inputs = form('input')
             if len(inputs) == 2:
                 data = []
                 for input in inputs:
@@ -91,6 +91,6 @@ class SQLInjection(object):
         return False
 
     def __get_parameters(self, url):
-        parsed = urllib.parse.urlparse(url.get_url())
+        parsed = urllib.parse.urlparse(url)
         params = urllib.parse.parse_qsl(parsed.query)
         return params

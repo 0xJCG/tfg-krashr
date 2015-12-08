@@ -12,7 +12,7 @@ class SQLInjectionTest(unittest.TestCase):
     def setUp(self):
         from App.core.url_list import URLlist
         url_list = URLlist()
-        url_list.put_url("http://pvulpix.hol.es")
+        url_list.put_url("http://pvulpix.hol.es/sqli.php")
         self.sqt = SQLInjection(url_list)
 
     def test_search_injections(self):
