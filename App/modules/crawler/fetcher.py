@@ -30,6 +30,9 @@ class Fetcher(object):
             for tag in tags:
                 href = tag.get("href")
                 domain = "{0.scheme}://{0.netloc}/".format(urlsplit(href))
+                if domain == ":///": # The link may be relative.
+                    domain = self.domain
+                    href = domain + href
                 if href is not None and href not in self.urls and domain == self.domain:
                     self.urls.append(href)
         return self.urls

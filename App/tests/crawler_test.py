@@ -15,11 +15,19 @@ class CrawlerTest(unittest.TestCase):
         self.crawler = Crawler("http://pvulpix.hol.es")
 
     def test_fetch(self):
-        self.assertEqual(self.fetcher.fetch(), [])
+        self.assertEqual(self.fetcher.fetch(), ["http://pvulpix.hol.es/sqli.php", "http://pvulpix.hol.es/is.html"])
 
     def test_crawl(self):
         crawled_urls = self.crawler.crawl()
-        self.assertEqual(crawled_urls.get_url().get_url(), "http://pvulpix.hol.es")
+        url = crawled_urls.get_url().get_url()
+        self.assertEqual(url, "http://pvulpix.hol.es")
+        url = crawled_urls.get_url().get_url()
+        self.assertEqual(url, "http://pvulpix.hol.es/sqli.php")
+        url = crawled_urls.get_url().get_url()
+        self.assertEqual(url, "http://pvulpix.hol.es/is.html")
+        url = crawled_urls.get_url().get_url()
+        self.assertEqual(url, "http://pvulpix.hol.es/index.html")
+        self.assertEqual(crawled_urls.is_empty(), True)
 
 if __name__ == '__main__':
     unittest.main()
