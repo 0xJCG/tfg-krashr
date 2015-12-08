@@ -97,7 +97,7 @@ angular.module('myApp.services', [])
 		request.USERNAME = USERNAME;
 		request.PASSWORD = PASSWORD;
 
-		var promise = $http.post(direction + '/getallresults', request).success(function(validation) {
+		var promise = $http.post(direction + '/results', request).success(function(validation) {
 			return(validation);
 		});
 
@@ -110,7 +110,7 @@ angular.module('myApp.services', [])
 		request.USERNAME = USERNAME;
 		request.PASSWORD = PASSWORD;
 
-		var promise = $http.post(direction + '/getcurrentresult', request).success(function(validation) {
+		var promise = $http.post(direction + '/currentresult', request).success(function(validation) {
 			return(validation);
 		});
 

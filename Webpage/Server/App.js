@@ -42,6 +42,7 @@ router.route('/getprofile').post(userController.getUserInfo);
 
 router.route('/results/:process').post(resultController.getResult);
 router.route('/results').post(resultController.getAllResults);
+router.route('/currentresult').post(resultController.getCurrentResult);
 router.route('/search').post(resultController.search);
 
 // Starting server

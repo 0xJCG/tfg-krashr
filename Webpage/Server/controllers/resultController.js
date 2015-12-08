@@ -72,6 +72,47 @@ exports.getResult = function(request, response) {
 	});
 };
 
+exports.getCurrentResult = function(request, response) {
+	var b = request.body, // Getting the data from the request.
+        ip = request.headers['x-forwarded-for'] || // http://stackoverflow.com/questions/8107856/how-to-determine-a-users-ip-address-in-node
+        request.connection.remoteAddress ||
+        request.socket.remoteAddress ||
+        request.connection.socket.remoteAddress,
+        parser = new UAParser(), // http://stackoverflow.com/questions/6163350/server-side-browser-detection-node-js
+        ua = request.headers['user-agent'],
+        browser = parser.setUA(ua).getBrowser().name + " " + parser.setUA(ua).getBrowser().version;
+
+    // Logging.
+	new Log({ACTION: "Getting the current result attempt", USERNAME: b.USERNAME, IP: ip, BROWSER: browser}).save(function(error) {
+        if (error)
+            console.log(error);
+    });
+
+	User.findOne({USERNAME: b.USERNAME}, function(error, user) { // Searching the user to check the password.
+		if (user.PASSWORD == b.PASSWORD) { // If the passwords are the same...
+			if (user.RESULTS.length != 0)
+			    response.status(200).send(false);
+    		current = false;
+    		user.RESULTS.forEach(function(result) {
+    		    if (result.CURRENT)
+    		        current = result;
+            });
+            if (!current) {
+                new Log({ACTION: "There are no current results", USERNAME: b.USERNAME, IP: ip, BROWSER: browser}).save(function(error) {
+                    if (error)
+                        console.log(error);
+                });
+            }
+            new Log({ACTION: "There are current results", USERNAME: b.USERNAME, PROCESS: current.PROCESS, IP: ip, BROWSER: browser}).save(function(error) {
+                if (error)
+                    console.log(error);
+            });
+    		response.status(200).send(current);
+		} else
+			response.status(500).send(); // ...we send an 500 error code.
+	});
+};
+
 exports.search = function(request, response) {
 	var b = request.body, // Getting the data from the request.
         ip = request.headers['x-forwarded-for'] || // http://stackoverflow.com/questions/8107856/how-to-determine-a-users-ip-address-in-node
