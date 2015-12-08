@@ -90,6 +90,32 @@ angular.module('myApp.services', [])
 
 		return(promise);
 	}
+
+	this.getAllSearches = function(USERNAME, PASSWORD) {
+		var request = new Object();
+
+		request.USERNAME = USERNAME;
+		request.PASSWORD = PASSWORD;
+
+		var promise = $http.post(direction + '/getallresults', request).success(function(validation) {
+			return(validation);
+		});
+
+		return(promise);
+	}
+
+	this.getActualSearch = function(USERNAME, PASSWORD) {
+		var request = new Object();
+
+		request.USERNAME = USERNAME;
+		request.PASSWORD = PASSWORD;
+
+		var promise = $http.post(direction + '/getcurrentresult', request).success(function(validation) {
+			return(validation);
+		});
+
+		return(promise);
+	}
 })
 
 .service('searchListService',function() {
