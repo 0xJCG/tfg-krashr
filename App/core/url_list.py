@@ -28,7 +28,7 @@ class URLlist(object):
     def get_url(self):
         try:
             aux = self.url_list.get(block=False)
-            self.visited.append(aux)
+            self.visited.append(aux.get_url())
             return aux
         except queue.Empty:
             return None

@@ -10,12 +10,12 @@ from App.modules.crawler.fetcher import Fetcher
 
 class Crawler(object):
     def __init__(self, root):
-        self.root = root
         self.queue = URLlist()
+        self.queue.put_url(root)
+        self.final_list = URLlist()
+        self.final_list.put_url(root)
 
     def crawl(self):
-        self.__fetch_urls(self.root)
-
         while True:
             url = self.queue.get_url()
 
@@ -24,11 +24,12 @@ class Crawler(object):
 
             self.__fetch_urls(url.get_url())
 
-        return self.queue.get_visited()
+        return self.final_list
 
     def __fetch_urls(self, url):
         page = Fetcher(url)
         response = page.fetch()
 
         for link in response:
-            self.queue.put_url(URL(link))
+            self.queue.put_url(link)
+            self.final_list.put_url(link)

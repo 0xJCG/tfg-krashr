@@ -14,13 +14,12 @@ class CrawlerTest(unittest.TestCase):
         self.fetcher = Fetcher("http://pvulpix.hol.es")
         self.crawler = Crawler("http://pvulpix.hol.es")
 
-    # def test_fetch(self):
-    #    self.assertEqual(self.fetcher.fetch(), [])
+    def test_fetch(self):
+        self.assertEqual(self.fetcher.fetch(), [])
 
     def test_crawl(self):
-        from App.core.url import URL
-        url = URL("http://pvulpix.hol.es")
-        self.assertEqual(self.crawler.crawl(), [url])
+        crawled_urls = self.crawler.crawl()
+        self.assertEqual(crawled_urls.get_url().get_url(), "http://pvulpix.hol.es")
 
 if __name__ == '__main__':
     unittest.main()
