@@ -25,8 +25,10 @@ app.use(methodOverride());
 // Importing models and controllers
 var userModel = require("./models/user.js")(app,mongoose);
 var resultModel = require("./models/result.js")(app,mongoose);
+var logModel = require("./models/log.js")(app,mongoose);
 var userController = require("./controllers/userController.js");
 var resultController = require("./controllers/resultController.js");
+var coreController = require("./controllers/coreController.js");
 
 // Router options
 var router = express.Router();
