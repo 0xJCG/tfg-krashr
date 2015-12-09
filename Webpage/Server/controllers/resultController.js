@@ -131,6 +131,23 @@ exports.search = function(request, response) {
 
 	User.findOne({USERNAME: b.USERNAME}, function(error, user) { // Searching the user to check the password.
 		if (user.PASSWORD == b.PASSWORD) { // If the passwords are the same...
+			// http://stackoverflow.com/questions/8407460/sending-data-from-node-js-to-java-using-sockets
+			// Opening a socket to communicate with the Python server.
+            var net = require('net');
+            var python = net.connect(1010, 'localhost');
+
+            var msg = {
+                "user": b.USERNAME,
+                "url": b.WEB,
+                "search_options": {
+                    "number": 1,
+                    "module": "crawler"
+                }
+            }
+
+            python.write(msg); // Sending data to the Python server.
+            python.end(); // Closing the connection.
+
 			// Logging.
             new Log({ACTION: "Web searching", USERNAME: b.USERNAME, WEB: b.WEB, IP: ip, BROWSER: browser}).save(function(error) {
                 if (error)
@@ -141,33 +158,3 @@ exports.search = function(request, response) {
 			response.status(200).send(false);
 	});
 };
-
-/*exports.getAllResults = function(request, response) {
-	var b = request.body; // Getting the data from the request.
-
-	User.findOne({USERNAME: b.USERNAME}, function(error, user) { // Searching the user to check the password.
-		if (user.PASSWORD == b.PASSWORD) { // If the passwords are the same...
-		    var python;
-		    var output = "";
-            switch (user.TYPE) {
-                case 1: // Basic users.
-                    python = require('child_process').spawn('python', // second argument is array of parameters, e.g.:
-                         ["/home/me/pythonScript.py", request.files.myUpload.path, request.files.myUpload.type]
-                         );
-                    python.stdout.on('data', function(){ output += data });
-                    break;
-                default: // Pro and admin users.
-                    python = require('child_process').spawn('python', // second argument is array of parameters, e.g.:
-                         ["/home/me/pythonScript.py", request.files.myUpload.path, request.files.myUpload.type]
-                         );
-                    python.stdout.on('data', function(){ output += data });
-            }
-            python.on('close', function(code) {
-                if (code !== 0)
-                    return res.send(500, code);
-                return res.send(200, output)
-            });
-		} else
-			response.status(500).send(); // ...we send an 500 error code.
-	});
-};*/
