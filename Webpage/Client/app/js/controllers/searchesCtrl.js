@@ -1,5 +1,5 @@
 angular.module('myApp.searchesCtrl', []).
-    controller('SearchesCtrl', function($scope, $location, restClient) {
+    controller('SearchesCtrl', function($rootScope, $scope, $location, restClient) {
 
     /* Hiding the warning DIVs. */
     $scope.no_search = true;
@@ -9,6 +9,10 @@ angular.module('myApp.searchesCtrl', []).
 
     if (!localStorage.getItem("user"))
         $location.path("/signin");
+
+    /* Changing the menu. */
+    $rootScope.menu_sign_in = true;
+    $rootScope.menu_profile = true;
 
     getAllSearches();
 

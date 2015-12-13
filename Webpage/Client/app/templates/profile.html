@@ -1,20 +1,8 @@
-<ol class="breadcrumb putdown">
-    <li><a href="#/main">Home</a></li>
-    <li><a href="">My account</a></li>
-    <li class="active">My profile</li>
-</ol>
-
-<div id="sidebar-wrapper">
-    <ul class="sidebar-nav">
-        <li class="sidebar-brand">
-            <a href="">My account</a>
-        </li>
-        <li><a href="#/profile">My profile</a></li>
+<div class="navbar navbar-default center">
+    <ul class="nav nav-tabs centered">
+        <li class="active"><a href="#/profile">My profile</a></li>
         <li><a href="#/updatepassword">Update password</a></li>
-        <li class="sidebar-brand">
-            <a href="#/allsearches">Searches</a>
-        </li>
-        <li><a href="#/allsearches">All searches</a></li>
+        <li><a href="#/allsearches">My searches</a></li>
         <li><a href="#/nowsearching">Now searching...</a></li>
     </ul>
 </div>
@@ -33,50 +21,47 @@
     <div class="alert alert-success" ng-hide="successful">
         Profile updated successfully.
     </div>
-    <form id="signupform" class="form-horizontal" role="form">
+    <div class="alert alert-warning" ng-hide="in_data">
+            All the required data is not inserted.
+        </div>
+    <form id="signupform" class="form-horizontal" role="form" ng-submit="updateProfile()">
         <div class="form-group">
             <div class="col-md-12">
-                <input type="text" class="form-control" id="user" name="user" placeholder="Username" ng-model="user" disabled="disabled">
+                <div class="input-group">
+                    <span class="input-group-addon">@</span>
+                    <input type="text" class="form-control" id="user" name="user" placeholder="Username" ng-model="user" disabled>
+                </div>
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-md-12">
+                <input type="email" class="form-control" id="email" name="email" placeholder="Email address" ng-model="email" disabled>
             </div>
         </div>
         <div class="form-group">
             <div class="col-md-12">
                 <div class="input-group">
-                    <input type="text" class="form-control" id="email" name="email" placeholder="Email address" ng-model="email" disabled="disabled">
-                    <span class="input-group-btn">
-                        <button class="btn btn-default" type="submit">?</button>
-                    </span>
+                    <input type="text" class="form-control" id="firstname" name="firstname" placeholder="First name" ng-model="firstname" pattern=".{2,}" required autofocus>
+                    <span class="input-group-addon" data-toggle="tooltip" title="2 characters min.">?</span>
                 </div>
             </div>
         </div>
         <div class="form-group">
             <div class="col-md-12">
                 <div class="input-group">
-                    <input type="text" class="form-control" id="firstname" name="firstname" placeholder="First name" ng-model="firstname">
-                    <span class="input-group-btn">
-                        <button class="btn btn-default" type="submit">?</button>
-                    </span>
+                    <input type="text" class="form-control" id="lastname" name="lastname" placeholder="Last name" ng-model="lastname" pattern=".{2,}" required>
+                    <span class="input-group-addon" data-toggle="tooltip" title="2 characters min.">?</span>
                 </div>
             </div>
         </div>
         <div class="form-group">
             <div class="col-md-12">
-                <div class="input-group">
-                    <input type="text" class="form-control" id="lastname" name="lastname" placeholder="Last name" ng-model="lastname">
-                    <span class="input-group-btn">
-                        <button class="btn btn-default" type="submit">?</button>
-                    </span>
-                </div>
-            </div>
-        </div>
-        <div class="form-group">
-            <div class="col-md-12">
-                <input type="password" class="form-control" id="password" name="password" placeholder="Enter your password to update your profile" ng-model="password" required="">
+                <input type="password" class="form-control" id="password" name="password" placeholder="Enter your password to update your profile" ng-model="password" required>
             </div>
         </div>
         <div class="form-group">
             <div class="col-md-offset-0 col-md-12">
-                <button id="btn-update" type="button" class="btn btn-info" ng-click="updateProfile()">Update profile</button>
+                <button id="btn-update" type="submit" class="btn btn-info" ng-click="updateProfile()">Update profile</button>
                 <button id="btn-signout" type="button" class="btn btn-danger" ng-click="signOut()">Sign out</button>
             </div>
         </div>

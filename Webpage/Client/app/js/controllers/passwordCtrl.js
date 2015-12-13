@@ -1,8 +1,12 @@
 angular.module('myApp.passwordCtrl', []).
-    controller('PasswordCtrl', function($scope, $location, restClient) {
+    controller('PasswordCtrl', function($rootScope, $scope, $location, restClient) {
 
     if (!localStorage.getItem("user"))
         $location.path("/signin");
+
+    /* Changing the menu. */
+    $rootScope.menu_sign_in = true;
+    $rootScope.menu_profile = true;
 
 	/* Hiding the warning DIVs. */
     $scope.data = true;
@@ -10,6 +14,14 @@ angular.module('myApp.passwordCtrl', []).
     $scope.oldpass = true;
     $scope.updatepass = true;
     $scope.successful = true;
+
+    $scope.helpPass = function() {
+
+    }
+
+    $scope.helpPass2 = function() {
+
+    }
 
     $scope.updatePassword = function() {
         var oldPass = $scope.oldpass;

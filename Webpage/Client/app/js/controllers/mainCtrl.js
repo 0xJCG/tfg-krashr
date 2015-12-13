@@ -1,5 +1,13 @@
 angular.module('myApp.mainCtrl', []).
-    controller('MainCtrl', function($scope, $location, restClient) {
+    controller('MainCtrl', function($rootScope, $scope, $location, restClient) {
+
+    if (!localStorage.getItem("user")) {
+        $rootScope.menu_sign_in = false;
+        $rootScope.menu_profile = false;
+    } else {
+        $rootScope.menu_sign_in = true;
+        $rootScope.menu_profile = true;
+    }
 
     /* Hiding the warning DIVs. */
     $scope.web = true;

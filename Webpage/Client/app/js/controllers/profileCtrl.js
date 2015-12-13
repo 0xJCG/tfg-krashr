@@ -1,18 +1,17 @@
 angular.module('myApp.profileCtrl', []).
-    controller('ProfileCtrl', function($scope, $location, restClient) {
+    controller('ProfileCtrl', function($rootScope, $scope, $location, restClient) {
 
     /* Hiding the warning DIVs. */
     $scope.pass = true;
     $scope.impossible = true;
     $scope.r_impossible = true;
     $scope.successful = true;
+    $scope.in_data = true;
 
     if (!localStorage.getItem("user"))
         $location.path("/signin");
 
-	getProfile();
-
-    //$scope.getProfile =
+    getProfile();
 
     function getProfile() {
         var user = JSON.parse(localStorage.getItem('user'));
@@ -28,31 +27,43 @@ angular.module('myApp.profileCtrl', []).
                 $scope.pass = true;
                 $scope.impossible = true;
                 $scope.successful = true;
+                $scope.in_data = true;
         });
     }
 
     $scope.updateProfile = function() {
-        var user = JSON.parse(localStorage.getItem('user'));
-        var pass = sha512($scope.password)
-        if (user.pass == pass) {
-            restClient.updateUserInfo(user.name, user.pass, $scope.email, $scope.firstname, $scope.lastname).then(function(updated) {
-                if (updated) {
-                    $scope.successful = false;
-                    $scope.pass = true;
-                    $scope.impossible = true;
-                    $scope.r_impossible = true;
-                } else {
-                    $scope.impossible = false;
-                    $scope.pass = true;
-                    $scope.r_impossible = true;
-                    $scope.successful = true;
-                }
-            });
-        } else {
-            $scope.pass = false;
+        if (!$scope.firstname || !$scope.lastname || !$scope.password) {
+            $scope.pass = true;
             $scope.impossible = true;
             $scope.r_impossible = true;
             $scope.successful = true;
+            $scope.in_data = false;
+        } else {
+            var user = JSON.parse(localStorage.getItem('user'));
+            var pass = sha512($scope.password)
+            if (user.pass == pass) {
+                restClient.updateUserInfo(user.name, user.pass, $scope.firstname, $scope.lastname, $scope.email).then(function(updated) {
+                    if (updated) {
+                        $scope.successful = false;
+                        $scope.pass = true;
+                        $scope.impossible = true;
+                        $scope.r_impossible = true;
+                        $scope.in_data = true;
+                    } else {
+                        $scope.impossible = false;
+                        $scope.pass = true;
+                        $scope.r_impossible = true;
+                        $scope.successful = true;
+                        $scope.in_data = true;
+                    }
+                });
+            } else {
+                $scope.pass = false;
+                $scope.impossible = true;
+                $scope.r_impossible = true;
+                $scope.successful = true;
+                $scope.in_data = true;
+            }
         }
     }
 

@@ -1,6 +1,6 @@
 <div class="jumbotron" style="padding-bottom:0px;">
-    <div class="container">
-        <h1>Project Vulpix</h1>
+    <div class="container padding">
+        <h1 class="text-center">Project Vulpix</h1>
         <div class="alert alert-danger" ng-hide="web">
             You have to be signed in to search for vulnerabilities.
         </div>
@@ -10,11 +10,12 @@
         <div class="alert alert-warning" ng-hide="wrong">
             The URL is not right.
         </div>
-        <form class="form-vulsearch" role="form">
+        <form class="form-vulsearch" role="form" ng-submit="search()">
             <div class="input-group">
-                <input type="text" class="form-control" placeholder="URL to search for vulnerabilities..." ng-model="websearch" required="" autofocus="">
+                <input type="text" class="form-control" placeholder="Enter an URL to search for vulnerabilities..." ng-model="websearch" required autofocus>
+                <span class="input-group-addon" data-toggle="tooltip" title="Example: http:/www.foo.com">?</span>
                 <span class="input-group-btn">
-                    <button class="btn btn-default" type="button" ng-click="search()">Search!</button>
+                    <button class="btn btn-default" type="submit" ng-click="search()">Search!</button>
                 </span>
             </div>
         </form>

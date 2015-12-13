@@ -1,9 +1,14 @@
 angular.module('myApp.signinCtrl', []).
-    controller('SigninCtrl', function($scope, $location, restClient) {
+    controller('SigninCtrl', function($rootScope, $scope, $location, restClient) {
 
-    var oldUsr = JSON.parse(localStorage.getItem("user"));
-    if (oldUsr)
+    if (localStorage.getItem("user")) {
         $location.path("/profile");
+        $rootScope.menu_sign_in = true;
+        $rootScope.menu_profile = true;
+    } else {
+        $rootScope.menu_sign_in = false;
+        $rootScope.menu_profile = false;
+    }
 
     /* Hiding the warning DIVs. */
     $scope.in_data = true;
