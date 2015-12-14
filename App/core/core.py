@@ -116,12 +116,10 @@ class Core(object):
                                 main(self.url_list, self.process, self.user)
                             else:
                                 continue
-        data = {
-            "PROCESS": self.process,
-            "STATUS": "finished"
-        }
-        t = Thread(requests.post(api + "/updateprocess", data=json.dumps(data)))
-        t.start()
+
+        db = DBAdapter()
+        self.process, web = db.new_process(self.url, 1, "finished")
+        db.close_connection()
 
 def main(petition):
     core = Core(petition)

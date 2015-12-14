@@ -54,11 +54,11 @@ class SQLInjection(object):
             url = self.url_list.get_url()
             if url is None or type(url) is not URL:
                 break
-            self.__signin_attemp(url)
+            self.__sign_in_attempt(url)
             self.__blind_sqli(url)
             # self.__serialized_sqli(url)
 
-    def __signin_attemp(self, url):
+    def __sign_in_attempt(self, url):
         web = url.get_content()
         forms = web('form')
         for form in forms:
