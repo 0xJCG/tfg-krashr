@@ -8,9 +8,9 @@ import sys
 
 from App.modules.sqlinjection.sql_injection import SQLInjection
 
-def main(url):
-    sql_injection = SQLInjection(url)
+def main(url_list, process, user):
+    sql_injection = SQLInjection(url_list, process, user)
     return sql_injection.search_injections()
 
 if __name__ == "__main__":
-    main(sys.argv[1])
+    main(sys.argv[1], sys.argv[2], sys.argv[3])

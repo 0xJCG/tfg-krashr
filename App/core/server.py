@@ -34,8 +34,8 @@ class ClientThread(threading.Thread):
         # Read the message data
         data = self.__receive_all(msg_len)
 
-        core = Core()
-        core.start(data)
+        core = Core(data)
+        core.start()
 
         print("Client at " + self.ip + " disconnected...")
 

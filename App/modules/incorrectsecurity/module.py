@@ -8,9 +8,9 @@ import sys
 
 from App.modules.incorrectsecurity.incorrect_security import IncorrectSecurity
 
-def main(url_list):
-    incorrect_security = IncorrectSecurity(url_list)
+def main(url_list, process, user):
+    incorrect_security = IncorrectSecurity(url_list, process, user)
     return incorrect_security.search_security_flaws()
 
 if __name__ == "__main__":
-    main(sys.argv[1])
+    main(sys.argv[1], sys.argv[2], sys.argv[3])
