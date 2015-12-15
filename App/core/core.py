@@ -74,7 +74,6 @@ class Core(object):
             self.user = data["user"]
             self.url = data["url"]
             self.actions = json.load(data["actions"])
-            pass
         return True
 
     def __check_modules(self):
