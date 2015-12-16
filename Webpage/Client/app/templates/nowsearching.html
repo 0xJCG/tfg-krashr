@@ -18,4 +18,15 @@
     <div class="alert alert-success" ng-hide="search">
         There is a search executing right now.
     </div>
+    <div class="panel panel-primary" ng-hide="result">
+        <div class="panel-heading">
+            <h3 class="panel-title">Information about the current search</h3>
+        </div>
+        <div class="panel-body">
+            <p>URL: {{web}}.</p>
+            <p>Date: {{date}}.</p>
+            <p>Search type: {{stype}}.</p>
+            <p>Status: {{status}}.</p>
+        </div>
+    </div>
 </div>

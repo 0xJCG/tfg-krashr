@@ -23,16 +23,16 @@ class DBAdapter:
     def close_connection(self):
         self.conn.close()
 
-    def new_process(self, url, s_type, status):
+    def new_process(self, url, user, s_type, status):
         cur = self.conn.cursor()
-        process = cur.callproc("new_process", [url, s_type, status])
+        process = cur.callproc("new_process", [url, user, s_type, status])
         cur.close()
         self.conn.commit()
         return process
 
     def vulnerability_found(self, process, web, v_type):
         cur = self.conn.cursor()
-        cur.callproc("vulnerability_found", [process, web, v_type])
+        cur.callproc("vulnerability_found", [process, v_type, web])
         cur.close()
         self.conn.commit()
 

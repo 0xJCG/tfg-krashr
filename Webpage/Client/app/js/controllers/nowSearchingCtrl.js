@@ -4,6 +4,7 @@ angular.module('myApp.nowSearchingCtrl', []).
     /* Hiding the warning DIVs. */
     $scope.no_search = true;
     $scope.search = true;
+    $scope.result = true;
 
     /* DIV showing searching for an actual vulnerability search. */
     $scope.searching = false;
@@ -23,9 +24,12 @@ angular.module('myApp.nowSearchingCtrl', []).
             if (search.data) {
                 $scope.searching = true;
                 $scope.search = false;
-                var search = search.data;
-                $scope.web = search.WEB;
-                $scope.date = search.DATE;
+                $scope.result = false;
+                var response = search.data;
+                $scope.web = response.web;
+                $scope.date = response.date;
+                $scope.stype = response.stype;
+                $scope.status = response.status;
             } else
                 $scope.no_search = false;
                 $scope.searching = true;

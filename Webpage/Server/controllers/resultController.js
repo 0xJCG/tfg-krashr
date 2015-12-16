@@ -98,10 +98,10 @@ exports.getCurrentResult = function(request, response) {
 			// http://stackoverflow.com/questions/8407460/sending-data-from-node-js-to-java-using-sockets
 			// Opening a socket to communicate with the Python server.
             var net = require('net');
-            var python = net.connect({port: 8124, host: "localhost"},
+            var python = net.connect({port: 9999, host: "localhost"},
                 function() { //'connect' listener
                 console.log('connected to server!');
-                python.write(msg); // Sending data to the Python server.
+                python.write(new Buffer(msg)); // Sending data to the Python server.
             });
             python.on('data', function(data) {
                 serverResponse = data.toString();
@@ -159,7 +159,7 @@ exports.search = function(request, response) {
 			// http://stackoverflow.com/questions/8407460/sending-data-from-node-js-to-java-using-sockets
 			// Opening a socket to communicate with the Python server.
             var net = require('net');
-            var python = net.connect({port: 8124, host: "localhost"},
+            var python = net.connect({port: 9999, host: "localhost"},
                 function() { //'connect' listener
                 console.log('connected to server!');
                 python.write(msg); // Sending data to the Python server.

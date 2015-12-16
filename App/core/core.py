@@ -120,7 +120,7 @@ class Core(object):
                 url_list = URLlist()
 
                 db = DBAdapter()
-                process = db.new_process(self.url, 1, 1)  # Status: 1, processing.
+                process = db.new_process(self.url, self.user, 1, 1)  # Status: 1, processing.
                 db.close_connection()
 
                 if process == 0:  # The user has a search going on.
@@ -155,7 +155,7 @@ class Core(object):
         elif c == 2:  # Get status option.
             db = DBAdapter()
             # status = db.get_process_status(self.p, self.user)
-            status = db.get_current_process_status(self.user)
+            process = db.get_current_process_status(self.user)
             db.close_connection()
 
             # data = {
@@ -164,7 +164,14 @@ class Core(object):
             # }
             # t = Thread(requests.post(api + "/status", data=json.dumps(data)))
             # t.start()
-            return status
+
+            data = {
+                "web": process[1],
+                "date": process[2],
+                "stype": process[0],
+                "status": process[3]
+            }
+            return json.dumps(data)
         else:  # Wrong call.
             return False
 

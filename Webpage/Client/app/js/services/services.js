@@ -84,7 +84,7 @@ angular.module('myApp.services', [])
 		request.PASSWORD = PASSWORD;
 		request.URL = URL;
 
-		var promise = $http.post(direction + '/getprofile', request).success(function(validation) {
+		var promise = $http.post(direction + '/search', request).success(function(validation) {
 			return(validation);
 		});
 

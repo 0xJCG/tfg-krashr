@@ -1,5 +1,5 @@
 angular.module('myApp.searchesCtrl', []).
-    controller('SearchesCtrl', function($rootScope, $scope, $location, restClient) {
+    controller('SearchesCtrl', function($rootScope, $scope, $location, restClient, searchListService) {
 
     /* Hiding the warning DIVs. */
     $scope.no_search = true;
@@ -21,8 +21,9 @@ angular.module('myApp.searchesCtrl', []).
         restClient.getAllSearches(user.name, user.pass).then(function(searches) {
             if (searches.data) {
                 $scope.searching = true;
-                var searches = searches.data;
-                searchListService.setSearchList(searches);
+                $scope.no_search = false;
+                var s = searches.data;
+                searchListService.setSearchList(s);
 			 	$scope.searches = searches;
             } else
                 $scope.no_search = false;
