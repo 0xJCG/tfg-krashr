@@ -25,6 +25,10 @@ class IncorrectSecurity(object):
         else:
             self.url_list = url_list
 
+        db = DBAdapter()
+        db.update_process(process, 4)  # Status: 4, incorrect security search.
+        db.close_connection()
+
     def search_security_flaws(self):
         while True:
             url = self.url_list.get_url()

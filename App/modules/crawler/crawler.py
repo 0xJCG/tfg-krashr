@@ -5,14 +5,19 @@ __author__ = "Jonathan Castro"
 __author_email__ = "Jonathan Castro, jonathancastrogonzalez at gmail dot com"
 
 from App.core.url_list import URLlist
+from App.core.db_adapter import DBAdapter
 from App.modules.crawler.fetcher import Fetcher
 
 class Crawler(object):
-    def __init__(self, root):
+    def __init__(self, process, root):
         self.queue = URLlist()
         self.queue.put_url(root)
         self.final_list = URLlist()
         self.final_list.put_url(root)
+
+        db = DBAdapter()
+        db.update_process(process, 2)  # Status: 2, crawling.
+        db.close_connection()
 
     def crawl(self):
         while True:

@@ -130,7 +130,7 @@ class Core(object):
                     if self.modules[m]:  # Looking if the required module is active.
                         if n == 1:
                             from App.modules.crawler.module import main
-                            url_list = main(URL(self.url))
+                            url_list = main(process, URL(self.url))
                         else:
                             if n == 2:
                                 from App.modules.sqlinjection.module import main

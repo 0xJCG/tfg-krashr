@@ -9,11 +9,11 @@ import sys
 
 from App.modules.crawler.crawler import Crawler
 
-def main(url):
-    crawler = Crawler(url)
+def main(url, process):
+    crawler = Crawler(url, process)
     aux = crawler.crawl()
     print(aux)
     return aux
 
 if __name__ == "__main__":
-    main(sys.argv[1])
+    main(sys.argv[1], sys.argv[2])

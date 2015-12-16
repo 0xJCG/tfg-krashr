@@ -28,6 +28,10 @@ class SQLInjection(object):
         else:
             self.url_list = url_list
 
+        db = DBAdapter()
+        db.update_process(process, 3)  # Status: 3, SQL injection search.
+        db.close_connection()
+
         # http://stackoverflow.com/questions/9626535/get-domain-name-from-url
         # self.domain = "{0.scheme}://{0.netloc}/".format(urllib.parse.urlsplit(url))
 
