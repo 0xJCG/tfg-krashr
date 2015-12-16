@@ -43,9 +43,9 @@ class DBAdapter:
         self.conn.commit()
         return status
 
-    def get_last_process(self, user):
+    def get_current_process_status(self, user):
         cur = self.conn.cursor()
-        status = cur.callproc("get_last_process", [user])
+        status = cur.callproc("get_current_process_status", [user])
         cur.close()
         self.conn.commit()
         return status

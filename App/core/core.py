@@ -42,7 +42,7 @@ search_schema = {
     "required": ["user", "url", "search_options"]
 }
 
-status_schema = {
+process_status_schema = {
     "title": "JSON from API",
     "type": "object",
     "properties": {
@@ -50,6 +50,15 @@ status_schema = {
         "process": {"type": "integer"}
     },
     "required": ["user", "process"]
+}
+
+current_status_schema = {
+    "title": "JSON from API",
+    "type": "object",
+    "properties": {
+        "user": {"type": "string"}
+    },
+    "required": ["user"]
 }
 
 api = "http://localhost:3000/"
@@ -60,20 +69,20 @@ class Core(object):
         self.user = ""
         self.url = ""
         self.actions = []
-        self.p = 0
+        # self.p = 0
 
     def __check_call(self, call):
         try:
             validate(call, search_schema)
         except:
             try:
-                validate(call, status_schema)
+                validate(call, current_status_schema)
             except:
                 return 0
             else:
                 data = json.load(call)
                 self.user = data["user"]
-                self.p = data["url"]
+                # self.p = data["url"]
                 return 2
         else:
             data = json.load(call)
@@ -145,7 +154,8 @@ class Core(object):
                 db.close_connection()
         elif c == 2:  # Get status option.
             db = DBAdapter()
-            status = db.get_process_status(self.p, self.user)
+            # status = db.get_process_status(self.p, self.user)
+            status = db.get_current_process_status(self.user)
             db.close_connection()
 
             # data = {

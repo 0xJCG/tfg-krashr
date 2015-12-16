@@ -90,24 +90,33 @@ exports.getCurrentResult = function(request, response) {
 
 	User.findOne({USERNAME: b.USERNAME}, function(error, user) { // Searching the user to check the password.
 		if (user.PASSWORD == b.PASSWORD) { // If the passwords are the same...
-			if (user.RESULTS.length != 0)
-			    response.status(200).send(false);
-    		current = false;
-    		user.RESULTS.forEach(function(result) {
-    		    if (result.CURRENT)
-    		        current = result;
-            });
-            if (!current) {
-                new Log({ACTION: "There are no current results", USERNAME: b.USERNAME, IP: ip, BROWSER: browser}).save(function(error) {
-                    if (error)
-                        console.log(error);
-                });
+			var serverResponse;
+			var msg = {
+                "user": b.USERNAME
             }
-            new Log({ACTION: "There are current results", USERNAME: b.USERNAME, PROCESS: current.PROCESS, IP: ip, BROWSER: browser}).save(function(error) {
+
+			// http://stackoverflow.com/questions/8407460/sending-data-from-node-js-to-java-using-sockets
+			// Opening a socket to communicate with the Python server.
+            var net = require('net');
+            var python = net.connect({port: 8124, host: "localhost"},
+                function() { //'connect' listener
+                console.log('connected to server!');
+                python.write(msg); // Sending data to the Python server.
+            });
+            python.on('data', function(data) {
+                serverResponse = data.toString();
+                client.end();
+            });
+            python.on('end', function() {
+                console.log('disconnected from server');
+            });
+
+			// Logging.
+            new Log({ACTION: "Current status got", USERNAME: b.USERNAME, WEB: b.WEB, IP: ip, BROWSER: browser}).save(function(error) {
                 if (error)
                     console.log(error);
             });
-    		response.status(200).send(current);
+			response.status(200).send(serverResponse);
 		} else
 			response.status(500).send(); // ...we send an 500 error code.
 	});
@@ -164,7 +173,7 @@ exports.search = function(request, response) {
             });
 
 			// Logging.
-            new Log({ACTION: "Web searching", USERNAME: b.USERNAME, WEB: b.WEB, IP: ip, BROWSER: browser}).save(function(error) {
+            new Log({ACTION: "Web searched", USERNAME: b.USERNAME, WEB: b.WEB, IP: ip, BROWSER: browser}).save(function(error) {
                 if (error)
                     console.log(error);
             });
