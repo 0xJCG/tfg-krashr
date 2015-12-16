@@ -90,7 +90,7 @@ exports.getCurrentResult = function(request, response) {
 
 	User.findOne({USERNAME: b.USERNAME}, function(error, user) { // Searching the user to check the password.
 		if (user.PASSWORD == b.PASSWORD) { // If the passwords are the same...
-			var serverResponse;
+			var serverResponse = false;
 			var msg = {
                 "user": b.USERNAME
             }
@@ -140,7 +140,7 @@ exports.search = function(request, response) {
 
 	User.findOne({USERNAME: b.USERNAME}, function(error, user) { // Searching the user to check the password.
 		if (user.PASSWORD == b.PASSWORD) { // If the passwords are the same...
-			var serverResponse;
+			var serverResponse = false;
 			var msg = {
                 "user": b.USERNAME,
                 "url": b.WEB,
