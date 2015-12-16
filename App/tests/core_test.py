@@ -13,10 +13,10 @@ from App.core.core import Core
 valid_call = {
     "user": "Jonathan",
     "url": "http://pvulpix.hol.es",
-    "search_options": {
+    "search_options": [{
         "number": 1,
         "module": "crawler"
-    }
+    }]
 }
 
 invalid_call = {

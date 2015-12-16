@@ -34,10 +34,12 @@ class ClientThread(threading.Thread):
         # Read the message data
         data = self.__receive_all(msg_len)
 
-        core = Core(data)
-        core.start()
+        core = Core()
+        response = core.start(data)
 
         print("Client at " + self.ip + " disconnected...")
+
+        return response
 
     def __receive_all(self, n):
         # Helper function to receive n bytes or return None if EOF is hit

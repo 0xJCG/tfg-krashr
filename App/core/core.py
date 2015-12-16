@@ -24,15 +24,15 @@ from App.core.url import URL
 from App.core.url_list import URLlist
 from App.core.db_adapter import DBAdapter
 
-schema = {
+search_schema = {
     "title": "JSON from API",
     "type": "object",
     "properties": {
         "user": {"type": "string"},
         "url": {"type": "string"},
         "search_options": {
-            "type": "object",
-            "properties": {
+            "type": "array",
+            "items": {
                 "number": {"type": "number"},
                 "module": {"type": "string"}
             },
@@ -42,39 +42,45 @@ schema = {
     "required": ["user", "url", "search_options"]
 }
 
+status_schema = {
+    "title": "JSON from API",
+    "type": "object",
+    "properties": {
+        "user": {"type": "string"},
+        "process": {"type": "integer"}
+    },
+    "required": ["user", "process"]
+}
+
 api = "http://localhost:3000/"
 
 class Core(object):
-    def __init__(self, petition):
+    def __init__(self):
         self.modules = {}
-        self.results = {}
-        self.petition_validation = self.__check_call(petition)
-        self.__check_modules()
-        self.url_list = URLlist()
-
-        db = DBAdapter()
-        self.process, web = db.new_process(self.url, 1, "searching")
-        db.close_connection()
-
-        data = {
-            "PROCESS": self.process,
-            "WEB": self.url,
-            "USER": self.user
-        }
-        t = Thread(requests.post(api + "/newprocess", data=json.dumps(data)))
-        t.start()
+        self.user = ""
+        self.url = ""
+        self.actions = []
+        self.p = 0
 
     def __check_call(self, call):
         try:
-            validate(call, schema)
+            validate(call, search_schema)
         except:
-            return False
+            try:
+                validate(call, status_schema)
+            except:
+                return 0
+            else:
+                data = json.load(call)
+                self.user = data["user"]
+                self.p = data["url"]
+                return 2
         else:
             data = json.load(call)
             self.user = data["user"]
             self.url = data["url"]
             self.actions = json.load(data["actions"])
-        return True
+        return 1
 
     def __check_modules(self):
         # http://stackoverflow.com/questions/5137497/find-current-directory-and-files-directory
@@ -97,32 +103,65 @@ class Core(object):
             r'(?:/?|[/?]\S+)$', re.IGNORECASE)
         return self.url is not None and regex.match(self.url) is not None
 
-    def start(self):
-        if self.petition_validation:
+    def start(self, call):
+        c = self.__check_call(call)
+        if c == 1:  # Search option.
             if self.__is_valid_url():
-                self.url_list.put_url(URL(self.url))
+                self.__check_modules()
+                url_list = URLlist()
+
+                db = DBAdapter()
+                process = db.new_process(self.url, 1, 1)  # Status: 1, processing.
+                db.close_connection()
+
+                if process == 0:  # The user has a search going on.
+                    return False
+
+                data = {
+                    "PROCESS": process,
+                    "WEB": self.url,
+                    "USER": self.user
+                }
+                t = Thread(requests.post(api + "/newprocess", data=json.dumps(data)))
+                t.start()
+
+                url_list.put_url(URL(self.url))
                 for n, m in self.actions:  # Going through the required modules by the API.
                     if self.modules[m]:  # Looking if the required module is active.
                         if n == 1:
                             from App.modules.crawler.module import main
-                            self.url_list = main(URL(self.url))
+                            url_list = main(URL(self.url))
                         else:
                             if n == 2:
                                 from App.modules.sqlinjection.module import main
-                                main(self.url_list, self.process, self.user)
+                                main(url_list, process, self.user)
                             elif n == 3:
                                 from App.modules.incorrectsecurity.module import main
-                                main(self.url_list, self.process, self.user)
+                                main(url_list, process, self.user)
                             else:
                                 continue
+                db = DBAdapter()
+                db.update_process(process, 5)  # Status: 5, finished.
+                db.close_connection()
+        elif c == 2:  # Get status option.
+            db = DBAdapter()
+            status = db.get_process_status(self.p, self.user)
+            db.close_connection()
 
-        db = DBAdapter()
-        self.process, web = db.new_process(self.url, 1, "finished")
-        db.close_connection()
+            data = {
+                "PROCESS": self.p,
+                "STATUS": status
+            }
+            t = Thread(requests.post(api + "/status", data=json.dumps(data)))
+            t.start()
+        else:  # Wrong call.
+            return False
+
+        return True  # If we get here, everything was right.
 
 def main(petition):
-    core = Core(petition)
-    core.start()
+    core = Core()
+    core.start(petition)
 
 if __name__ == "__main__":
     main(sys.argv[1])
