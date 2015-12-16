@@ -45,6 +45,8 @@ router.route('/results').post(resultController.getAllResults);
 router.route('/currentresult').post(resultController.getCurrentResult);
 router.route('/search').post(resultController.search);
 
+router.route('/saveresult').post(coreController.saveResult);
+
 // Starting server
 app.listen(3000, function() {
     console.log("Node server running on http://localhost:3000");

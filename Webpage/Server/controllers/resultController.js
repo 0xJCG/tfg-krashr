@@ -131,29 +131,44 @@ exports.search = function(request, response) {
 
 	User.findOne({USERNAME: b.USERNAME}, function(error, user) { // Searching the user to check the password.
 		if (user.PASSWORD == b.PASSWORD) { // If the passwords are the same...
+			var serverResponse;
+			var msg = {
+                "user": b.USERNAME,
+                "url": b.WEB,
+                "search_options": [
+                    {
+                        "number": 1,
+                        "module": "crawler"
+                    },
+                    {
+                        "number": 3,
+                        "module": "incorrectsecurity"
+                    }
+                ]
+            }
+
 			// http://stackoverflow.com/questions/8407460/sending-data-from-node-js-to-java-using-sockets
 			// Opening a socket to communicate with the Python server.
             var net = require('net');
-            var python = net.connect(1010, 'localhost');
-
-            var msg = {
-                "user": b.USERNAME,
-                "url": b.WEB,
-                "search_options": {
-                    "number": 1,
-                    "module": "crawler"
-                }
-            }
-
-            python.write(msg); // Sending data to the Python server.
-            python.end(); // Closing the connection.
+            var python = net.connect({port: 8124, host: "localhost"},
+                function() { //'connect' listener
+                console.log('connected to server!');
+                python.write(msg); // Sending data to the Python server.
+            });
+            python.on('data', function(data) {
+                serverResponse = data.toString();
+                client.end();
+            });
+            python.on('end', function() {
+                console.log('disconnected from server');
+            });
 
 			// Logging.
             new Log({ACTION: "Web searching", USERNAME: b.USERNAME, WEB: b.WEB, IP: ip, BROWSER: browser}).save(function(error) {
                 if (error)
                     console.log(error);
             });
-			response.status(200).send(true);
+			response.status(200).send(serverResponse);
 		} else
 			response.status(200).send(false);
 	});

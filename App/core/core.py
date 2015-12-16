@@ -117,13 +117,13 @@ class Core(object):
                 if process == 0:  # The user has a search going on.
                     return False
 
-                data = {
-                    "PROCESS": process,
-                    "WEB": self.url,
-                    "USER": self.user
-                }
-                t = Thread(requests.post(api + "/newprocess", data=json.dumps(data)))
-                t.start()
+                # data = {
+                #    "PROCESS": process,
+                #    "WEB": self.url,
+                #    "USER": self.user
+                # }
+                # t = Thread(requests.post(api + "/newprocess", data=json.dumps(data)))
+                # t.start()
 
                 url_list.put_url(URL(self.url))
                 for n, m in self.actions:  # Going through the required modules by the API.
@@ -148,12 +148,13 @@ class Core(object):
             status = db.get_process_status(self.p, self.user)
             db.close_connection()
 
-            data = {
-                "PROCESS": self.p,
-                "STATUS": status
-            }
-            t = Thread(requests.post(api + "/status", data=json.dumps(data)))
-            t.start()
+            # data = {
+            #    "PROCESS": self.p,
+            #    "STATUS": status
+            # }
+            # t = Thread(requests.post(api + "/status", data=json.dumps(data)))
+            # t.start()
+            return status
         else:  # Wrong call.
             return False
 
