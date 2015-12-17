@@ -38,11 +38,17 @@ class ClientThread(threading.Thread):
         data = self.client_socket.recv(1024)
 
         data = json.loads(str(data)[5:-1])
+        print(data)
 
         core = Core()
         response = core.start(data)
-        d = str(response['date'])
+        print(response)
 
+        if 'response' in response:
+            self.client_socket.sendall(json.dumps(response).encode('utf-8'))
+            return True
+
+        d = str(response['date'])
         response['date'] = d
 
         print("Client at " + self.ip + " disconnected...")
@@ -50,7 +56,7 @@ class ClientThread(threading.Thread):
         # return response
         # http://stackoverflow.com/questions/23876608/how-to-send-the-content-of-a-dictionary-properly-over-sockets-in-python3x
         self.client_socket.sendall(json.dumps(response).encode('utf-8'))
-        pass
+        return True
 
     def __receive_all(self, n):
         # Helper function to receive n bytes or return None if EOF is hit
@@ -66,7 +72,7 @@ host = "0.0.0.0"
 port = 9999
 
 tcp_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-# tcp_socket.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
+tcp_socket.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
 
 tcp_socket.bind((host, port))
 

@@ -8,7 +8,7 @@
 </div>
 
 <div class="container">
-    <h1>Now searching... (Disabled, sorry)</h1>
+    <h1>Now searching...</h1>
     <div class="alert alert-info" ng-hide="searching">
         Recovering search information.
     </div>
@@ -23,7 +23,7 @@
             <h3 class="panel-title">Information about the current search</h3>
         </div>
         <div class="panel-body">
-            <p>URL: {{web}}.</p>
+            <p>URL: <a href={{web}}>{{web}}</a>.</p>
             <p>Date: {{date}}.</p>
             <p>Search type: {{stype}}.</p>
             <p>Status: {{status}}.</p>

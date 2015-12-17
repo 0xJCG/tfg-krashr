@@ -103,7 +103,6 @@ exports.getCurrentResult = function(request, response) {
             socket.on('connect', function() { //Don't send until we're connected
                 socket.sendMessage(msg);
                 socket.on('data', function(data) {
-                    console.log(data.toString());
                     response.status(200).send(data);
                 });
             });
@@ -160,7 +159,6 @@ exports.search = function(request, response) {
             socket.on('connect', function() { //Don't send until we're connected
                 socket.sendMessage(msg);
                 socket.on('data', function(data) {
-                    console.log(data.toString());
                     response.status(200).send(data);
                 });
             });

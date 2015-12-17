@@ -124,7 +124,7 @@ class Core(object):
                 db.close_connection()
 
                 if process == 0:  # The user has a search going on.
-                    return False
+                    return {"response": False}
 
                 # data = {
                 #    "PROCESS": process,
@@ -165,6 +165,8 @@ class Core(object):
             # t = Thread(requests.post(api + "/status", data=json.dumps(data)))
             # t.start()
 
+            if process is None:
+                return {"response": False}
             data = {
                 "web": process[1],
                 "date": process[2],
@@ -174,9 +176,9 @@ class Core(object):
             # return json.dumps(data)
             return data
         else:  # Wrong call.
-            return False
+            return {"response": False}
 
-        return True  # If we get here, everything was right.
+        return {"response": True}  # If we get here, everything was right.
 
 def main(petition):
     core = Core()
