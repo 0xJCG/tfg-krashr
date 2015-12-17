@@ -15,20 +15,23 @@ __author__ = "Jonathan Castro"
 __author_email__ = "Jonathan Castro, jonathancastrogonzalez at gmail dot com"
 
 import psycopg2
+import psycopg2.extras
 
 class DBAdapter:
     def __init__(self):
-        self.conn = psycopg2.connect(database="pvulpix", user="postgres", password="", host="127.0.0.1", port="5432")
+        self.conn = psycopg2.connect(database="pvulpix", user="postgres", password="seguridad", host="127.0.0.1", port="5432")
 
     def close_connection(self):
         self.conn.close()
 
     def new_process(self, url, user, s_type, status):
         cur = self.conn.cursor()
-        process = cur.callproc("new_process", [url, user, s_type, status])
+        cur.callproc("new_process", [url, user, s_type, status])
+        aux = self.conn.cursor('new_process')
+        process = aux.fetchone()
         cur.close()
         self.conn.commit()
-        return process
+        return process[0]
 
     def vulnerability_found(self, process, web, v_type):
         cur = self.conn.cursor()
@@ -38,17 +41,21 @@ class DBAdapter:
 
     def get_process_status(self, process, user):
         cur = self.conn.cursor()
-        status = cur.callproc("get_process_status", [process, user])
+        cur.callproc("get_process_status", [process, user])
+        aux = self.conn.cursor('process_status')
+        status = aux.fetchone()
         cur.close()
         self.conn.commit()
-        return status
+        return status[0]
 
     def get_current_process_status(self, user):
         cur = self.conn.cursor()
-        status = cur.callproc("get_current_process_status", [user])
+        cur.callproc("get_current_process_status", [user])
+        aux = self.conn.cursor('current_process_status')
+        process = aux.fetchone()
         cur.close()
         self.conn.commit()
-        return status
+        return process
 
     def update_process(self, process, s_type):
         cur = self.conn.cursor()
