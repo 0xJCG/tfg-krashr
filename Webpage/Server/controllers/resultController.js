@@ -98,8 +98,7 @@ exports.getCurrentResult = function(request, response) {
 			// http://stackoverflow.com/questions/8407460/sending-data-from-node-js-to-java-using-sockets
 			// Opening a socket to communicate with the Python server.
             var net = require('net');
-            var python = net.connect({port: 9999, host: "localhost"},
-                function() { //'connect' listener
+            var python = net.connect(9999, '127.0.0.1', function() { //'connect' listener
                 console.log('connected to server!');
                 python.write(new Buffer(msg)); // Sending data to the Python server.
             });
@@ -159,8 +158,7 @@ exports.search = function(request, response) {
 			// http://stackoverflow.com/questions/8407460/sending-data-from-node-js-to-java-using-sockets
 			// Opening a socket to communicate with the Python server.
             var net = require('net');
-            var python = net.connect({port: 9999, host: "localhost"},
-                function() { //'connect' listener
+            var python = net.connect(9999, '127.0.0.1', function() { //'connect' listener
                 console.log('connected to server!');
                 python.write(msg); // Sending data to the Python server.
             });
@@ -170,6 +168,7 @@ exports.search = function(request, response) {
             });
             python.on('end', function() {
                 console.log('disconnected from server');
+                response.status(200).send(serverResponse);
             });
 
 			// Logging.
@@ -177,7 +176,6 @@ exports.search = function(request, response) {
                 if (error)
                     console.log(error);
             });
-			response.status(200).send(serverResponse);
 		} else
 			response.status(200).send(false);
 	});
