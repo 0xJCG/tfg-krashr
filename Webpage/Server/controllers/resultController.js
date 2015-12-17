@@ -1,4 +1,5 @@
 var mongoose = require('mongoose'),
+    JsonSocket = require('json-socket'),
 	UAParser = require('ua-parser-js'),
 	Result = mongoose.model('Result'),
 	User = mongoose.model('User'),
@@ -90,24 +91,21 @@ exports.getCurrentResult = function(request, response) {
 
 	User.findOne({USERNAME: b.USERNAME}, function(error, user) { // Searching the user to check the password.
 		if (user.PASSWORD == b.PASSWORD) { // If the passwords are the same...
-			var serverResponse = false;
 			var msg = {
-                "user": b.USERNAME
-            }
+			    "user": b.USERNAME
+			}
 
 			// http://stackoverflow.com/questions/8407460/sending-data-from-node-js-to-java-using-sockets
 			// Opening a socket to communicate with the Python server.
             var net = require('net');
-            var python = net.connect(9999, '127.0.0.1', function() { //'connect' listener
-                console.log('connected to server!');
-                python.write(new Buffer(msg)); // Sending data to the Python server.
-            });
-            python.on('data', function(data) {
-                serverResponse = data.toString();
-                client.end();
-            });
-            python.on('end', function() {
-                console.log('disconnected from server');
+            var socket = new JsonSocket(new net.Socket()); //Decorate a standard net.Socket with JsonSocket
+            socket.connect(9999, '127.0.0.1');
+            socket.on('connect', function() { //Don't send until we're connected
+                socket.sendMessage(msg);
+                socket.on('data', function(data) {
+                    console.log(data.toString());
+                    response.status(200).send(data);
+                });
             });
 
 			// Logging.
@@ -115,7 +113,6 @@ exports.getCurrentResult = function(request, response) {
                 if (error)
                     console.log(error);
             });
-			response.status(200).send(serverResponse);
 		} else
 			response.status(500).send(); // ...we send an 500 error code.
 	});
@@ -155,20 +152,17 @@ exports.search = function(request, response) {
                 ]
             }
 
-			// http://stackoverflow.com/questions/8407460/sending-data-from-node-js-to-java-using-sockets
+            // http://stackoverflow.com/questions/8407460/sending-data-from-node-js-to-java-using-sockets
 			// Opening a socket to communicate with the Python server.
             var net = require('net');
-            var python = net.connect(9999, '127.0.0.1', function() { //'connect' listener
-                console.log('connected to server!');
-                python.write(msg); // Sending data to the Python server.
-            });
-            python.on('data', function(data) {
-                serverResponse = data.toString();
-                client.end();
-            });
-            python.on('end', function() {
-                console.log('disconnected from server');
-                response.status(200).send(serverResponse);
+            var socket = new JsonSocket(new net.Socket()); //Decorate a standard net.Socket with JsonSocket
+            socket.connect(9999, '127.0.0.1');
+            socket.on('connect', function() { //Don't send until we're connected
+                socket.sendMessage(msg);
+                socket.on('data', function(data) {
+                    console.log(data.toString());
+                    response.status(200).send(data);
+                });
             });
 
 			// Logging.

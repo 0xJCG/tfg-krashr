@@ -80,8 +80,8 @@ class Core(object):
             except:
                 return 0
             else:
-                data = json.load(call)
-                self.user = data["user"]
+                # data = json.load(call)
+                self.user = call["user"]
                 # self.p = data["url"]
                 return 2
         else:
@@ -171,7 +171,8 @@ class Core(object):
                 "stype": process[0],
                 "status": process[3]
             }
-            return json.dumps(data)
+            # return json.dumps(data)
+            return data
         else:  # Wrong call.
             return False
 
