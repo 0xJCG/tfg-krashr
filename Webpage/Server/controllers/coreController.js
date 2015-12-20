@@ -4,16 +4,22 @@ var mongoose = require('mongoose'),
 
 exports.saveResult = function(request, response) {
 	var b = request.body;
-    console.log(b);
-	User.findOne({USERNAME: b.USER}, function(error, user) {
+    User.findOne({USERNAME: b.USER}, function(error, user) {
 	    if (user) {
-	        var u = {NO_ID: user._id};
 	        Result.create({PROCESS: b.PROCESS, WEB: b.WEB, VULNERABILITY: b.VULNERABILITY, USER: b.USER}, function(error, result) { // Inserting the new user.
                 if (error)
                     response.status(500).send(false);
                 else {
                     var r = {NO_ID: result._id};
-                    User.update({USER: u}, {$push: {RESULTS: r}});
+                    User.findByIdAndUpdate(
+                        user._id,
+                        {$push: {RESULTS: r}},
+                        {safe: true, upsert: true, new : true},
+                        function(err, model) {
+                            console.log(err);
+                            console.log(model);
+                        }
+                    );
                     response.status(200).send(true);
                 }
             });

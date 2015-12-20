@@ -21,12 +21,11 @@ exports.getAllResults = function(request, response) {
             console.log(error);
     });
     console.log(b);
-	User.findOne({US_NAME: b.US_NAME}).populate('Results.PROCESS').exec(function(error, user) {
-	    console.log(user);
-		if (error || user == null) {
+	User.findOne({USERNAME: b.USERNAME}).populate('PROCESS').exec(function(error, user) {
+	    if (error || user == null) {
 			response.status(500).send();
 		} else {
-			if (user.US_PASS == b.US_PASS) {
+			if (user.PASSWORD == b.PASSWORD) {
 			    // Logging.
                 new Log({ACTION: "All results got", USERNAME: b.USERNAME, IP: ip, BROWSER: browser}).save(function(error) {
                     if (error)
