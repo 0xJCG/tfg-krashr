@@ -8,7 +8,7 @@ exports = module.exports = function(app,mongoose) {
 		LASTNAME: {type:String},
 		BIRTH_DATE: {type:Date},
 		TYPE: {type:Number, max:3, default:1},
-		RESULTS: [{PROCESS: {type:Schema.Types.ObjectId, ref:'Result', required:true}}]
+		RESULTS: [{type:Schema.Types.ObjectId, ref:'Result', required:true}]
 		});
 	mongoose.model('User',userSchema);
 };

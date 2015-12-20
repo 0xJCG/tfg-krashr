@@ -2,27 +2,27 @@
  
 angular.module('myApp', ['ngRoute', 'myApp.services', 'myApp.mainCtrl', 'myApp.profileCtrl', 'myApp.searchesCtrl', 'myApp.nowSearchingCtrl', 'myApp.signinCtrl', 'myApp.passwordCtrl'])
 
-.directive('search',function() {
+.directive('search', function() {
 	return {
 		templateUrl:'templates/directives/search.html'
 	};
 })
 
-.directive('searches',function() {
+.directive('searches', function() {
 	return {
 		templateUrl:'templates/directives/searches.html'
 	};
 })
 
-.directive('vulnerability',function() {
+.directive('vulnerabilities', function() {
 	return {
-		templateUrl:'templates/directives/vulnerability.html'
+		templateUrl:'templates/directives/vulnerabilities.html'
 	};
 })
 
-.directive('vulnerabilities',function() {
+.directive('vulnerability', function() {
 	return {
-		templateUrl:'templates/directives/vulnerabilities.html'
+		templateUrl:'templates/directives/vulnerability.html'
 	};
 })
 

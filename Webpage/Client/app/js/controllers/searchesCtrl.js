@@ -19,13 +19,14 @@ angular.module('myApp.searchesCtrl', []).
     function getAllSearches() {
         var user = JSON.parse(localStorage.getItem('user'));
         restClient.getAllSearches(user.name, user.pass).then(function(searches) {
-            console.log(searches);
+            console.log(searches.data);
             if (searches.data) {
+            console.log(1);
                 $scope.searching = true;
                 $scope.no_search = false;
                 var s = searches.data;
                 searchListService.setSearchList(s);
-			 	$scope.searches = searches;
+			 	$scope.searches = s;
             } else
                 $scope.no_search = false;
                 $scope.searching = true;

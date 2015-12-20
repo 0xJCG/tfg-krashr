@@ -10,10 +10,9 @@ exports.saveResult = function(request, response) {
                 if (error)
                     response.status(500).send(false);
                 else {
-                    var r = {NO_ID: result._id};
                     User.findByIdAndUpdate(
                         user._id,
-                        {$push: {RESULTS: r}},
+                        {$push: {RESULTS: result._id}},
                         {safe: true, upsert: true, new : true},
                         function(err, model) {
                             console.log(err);

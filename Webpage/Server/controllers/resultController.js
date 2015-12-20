@@ -20,8 +20,17 @@ exports.getAllResults = function(request, response) {
         if (error)
             console.log(error);
     });
-    console.log(b);
-	User.findOne({USERNAME: b.USERNAME}).populate('PROCESS').exec(function(error, user) {
+
+    User.find({USERNAME: b.USERNAME}, function(err, user) {
+        Result.populate(user, {path: "RESULTS"},function(err, results) {
+            //res.status(200).send(libros);
+            console.log(results);
+            response.status(200).send(false);
+        });
+    });
+
+	/*User.findOne({USERNAME: b.USERNAME}).populate({path: 'RESULTS'}).exec(function(error, user) {
+	    console.log(user.RESULTS);
 	    if (error || user == null) {
 			response.status(500).send();
 		} else {
@@ -35,7 +44,7 @@ exports.getAllResults = function(request, response) {
 			} else
 			    response.status(200).send(false);
 		}
-	});
+	});*/
 };
 
 exports.getResult = function(request, response) {
