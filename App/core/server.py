@@ -27,22 +27,12 @@ class ClientThread(threading.Thread):
     def run(self):
         print("Connection from : " + ip + ": " + str(port))
 
-        # Read message length and unpack it into an integer
-        # raw_msg_len = self.__receive_all(4)
-        # print(2)
-        # if not raw_msg_len:
-        #    return None
-        # msg_len, = struct.unpack('>I', raw_msg_len)[0]
-        # Read the message data
-        # data = self.__receive_all(msg_len)
-        data = self.client_socket.recv(1024)
-
-        data = json.loads(str(data)[5:-1])
-        print(data)
+        data = self.client_socket.recv(1024).decode('UTF-8')  # The data received is like 11#{"foo":"bar"}.
+        head, sep, tail = data.partition('#')  # Getting the data after the # character.
+        data = json.loads(tail)  # That data is a JSON and have to be loaded.
 
         core = Core()
         response = core.start(data)
-        print(response)
 
         if 'response' in response:
             self.client_socket.sendall(json.dumps(response).encode('utf-8'))

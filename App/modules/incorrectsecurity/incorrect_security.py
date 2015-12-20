@@ -44,19 +44,20 @@ class IncorrectSecurity(object):
                         name = i.get("name")
                         if name == "hash":
                             return False
-            self.__save_results(url, 10)
+                self.__save_results(url, 10)
+                return True
         return True
 
     def __save_results(self, web, v_type):
+        w = web.get_url()
         db = DBAdapter()
-        db.vulnerability_found(self.process, web, v_type)
+        db.vulnerability_found(self.process, w, v_type)
         db.close_connection()
 
         data = {
             "PROCESS": self.process,
-            "WEB": web,
+            "WEB": w,
             "VULNERABILITY": v_type,
             "USER": self.user
         }
-        t = Thread(requests.post(api, data=json.dumps(data)))
-        t.start()
+        requests.post(api, json=data)

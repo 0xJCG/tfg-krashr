@@ -22,14 +22,19 @@ angular.module('myApp.nowSearchingCtrl', []).
         var user = JSON.parse(localStorage.getItem('user'));
         restClient.getActualSearch(user.name, user.pass).then(function(search) {
             if (search.data) {
-                $scope.searching = true;
-                $scope.search = false;
-                $scope.result = false;
-                var response = search.data;
-                $scope.web = response.web;
-                $scope.date = response.date;
-                $scope.stype = response.stype;
-                $scope.status = response.status;
+                var d = search.data;
+                if (typeof d.response !== 'undefined') {
+                    $scope.no_search = false;
+                    $scope.searching = true;
+                } else {
+                    $scope.searching = true;
+                    $scope.search = false;
+                    $scope.result = false;
+                    $scope.web = d.web;
+                    $scope.date = d.date;
+                    $scope.stype = d.stype;
+                    $scope.status = d.status;
+                }
             } else
                 $scope.no_search = false;
                 $scope.searching = true;

@@ -20,8 +20,9 @@ exports.getAllResults = function(request, response) {
         if (error)
             console.log(error);
     });
-
+    console.log(b);
 	User.findOne({US_NAME: b.US_NAME}).populate('Results.PROCESS').exec(function(error, user) {
+	    console.log(user);
 		if (error || user == null) {
 			response.status(500).send();
 		} else {
@@ -128,17 +129,17 @@ exports.search = function(request, response) {
         browser = parser.setUA(ua).getBrowser().name + " " + parser.setUA(ua).getBrowser().version;
 
     // Logging.
-	new Log({ACTION: "Web searching attempt", USERNAME: b.USERNAME, WEB: b.WEB, IP: ip, BROWSER: browser}).save(function(error) {
+	new Log({ACTION: "Web searching attempt", USERNAME: b.USERNAME, WEB: b.URL, IP: ip, BROWSER: browser}).save(function(error) {
         if (error)
             console.log(error);
     });
 
 	User.findOne({USERNAME: b.USERNAME}, function(error, user) { // Searching the user to check the password.
 		if (user.PASSWORD == b.PASSWORD) { // If the passwords are the same...
-			var serverResponse = false;
+			// var serverResponse = false;
 			var msg = {
                 "user": b.USERNAME,
-                "url": b.WEB,
+                "url": b.URL,
                 "search_options": [
                     {
                         "number": 1,
@@ -159,15 +160,17 @@ exports.search = function(request, response) {
             socket.on('connect', function() { //Don't send until we're connected
                 socket.sendMessage(msg);
                 socket.on('data', function(data) {
-                    response.status(200).send(data);
+                    if (data) {
+                        // Logging.
+                        new Log({ACTION: "Web searched", USERNAME: b.USERNAME, WEB: b.WEB, IP: ip, BROWSER: browser}).save(function(error) {
+                            if (error)
+                                console.log(error);
+                        });
+                    }
+
                 });
             });
-
-			// Logging.
-            new Log({ACTION: "Web searched", USERNAME: b.USERNAME, WEB: b.WEB, IP: ip, BROWSER: browser}).save(function(error) {
-                if (error)
-                    console.log(error);
-            });
+			response.status(200).send(true);
 		} else
 			response.status(200).send(false);
 	});

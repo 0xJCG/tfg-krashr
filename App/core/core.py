@@ -69,7 +69,6 @@ class Core(object):
         self.user = ""
         self.url = ""
         self.actions = []
-        # self.p = 0
 
     def __check_call(self, call):
         try:
@@ -80,15 +79,12 @@ class Core(object):
             except:
                 return 0
             else:
-                # data = json.load(call)
                 self.user = call["user"]
-                # self.p = data["url"]
                 return 2
         else:
-            data = json.load(call)
-            self.user = data["user"]
-            self.url = data["url"]
-            self.actions = json.load(data["actions"])
+            self.user = call["user"]
+            self.url = call["url"]
+            self.actions = call["search_options"]
         return 1
 
     def __check_modules(self):
@@ -126,25 +122,18 @@ class Core(object):
                 if process == 0:  # The user has a search going on.
                     return {"response": False}
 
-                # data = {
-                #    "PROCESS": process,
-                #    "WEB": self.url,
-                #    "USER": self.user
-                # }
-                # t = Thread(requests.post(api + "/newprocess", data=json.dumps(data)))
-                # t.start()
-
-                url_list.put_url(URL(self.url))
-                for n, m in self.actions:  # Going through the required modules by the API.
-                    if self.modules[m]:  # Looking if the required module is active.
-                        if n == 1:
+                url_list.put_url(self.url)
+                for action in self.actions:  # Going through the required modules by the API.
+                    print(action)
+                    if self.modules[action["module"]]:  # Looking if the required module is active.
+                        if action["number"] == 1:
                             from App.modules.crawler.module import main
-                            url_list = main(process, URL(self.url))
+                            url_list = main(process, self.url)
                         else:
-                            if n == 2:
+                            if action["number"] == 2:
                                 from App.modules.sqlinjection.module import main
                                 main(url_list, process, self.user)
-                            elif n == 3:
+                            elif action["number"] == 3:
                                 from App.modules.incorrectsecurity.module import main
                                 main(url_list, process, self.user)
                             else:
@@ -154,16 +143,8 @@ class Core(object):
                 db.close_connection()
         elif c == 2:  # Get status option.
             db = DBAdapter()
-            # status = db.get_process_status(self.p, self.user)
             process = db.get_current_process_status(self.user)
             db.close_connection()
-
-            # data = {
-            #    "PROCESS": self.p,
-            #    "STATUS": status
-            # }
-            # t = Thread(requests.post(api + "/status", data=json.dumps(data)))
-            # t.start()
 
             if process is None:
                 return {"response": False}
@@ -173,7 +154,6 @@ class Core(object):
                 "stype": process[0],
                 "status": process[3]
             }
-            # return json.dumps(data)
             return data
         else:  # Wrong call.
             return {"response": False}
