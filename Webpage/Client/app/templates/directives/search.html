@@ -1,11 +1,10 @@
-<div class="card" ui-sref="edition({search_ID: $index})">
-    <div class="item item-divider">
-        {{search.WEB}}
+<div class="panel panel-primary" ui-sref="edition({search_ID: $index})">
+    <div class="panel-heading">
+        <h3 class="panel-title">Information about the result</h3>
     </div>
-    <div class="item item-text-wrap">
-        {{search.VULNERABILITY}}
-    </div>
-    <div class="item item-divider">
-        <vulnerabilities></vulnerabilities>
+    <div class="panel-body">
+        <p>URL: <a href={{web}}>{{search.WEB}}</a>.</p>
+        <p>Date: {{date}}.</p>
+        <p>Vulnerability: {{search.VULNERABILITY}}.</p>
     </div>
 </div>
