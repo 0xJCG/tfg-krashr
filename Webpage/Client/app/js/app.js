@@ -55,4 +55,11 @@ angular.module('myApp', ['ngRoute', 'myApp.services', 'myApp.mainCtrl', 'myApp.p
         otherwise({
             redirectTo: '/main'
         });
-}]);
+}])
+
+.filter('startFrom', function() {
+    return function(input, start) {
+        start = +start; //parse to int
+        return input.slice(start);
+    }
+});

@@ -116,36 +116,4 @@ angular.module('myApp.services', [])
 
 		return(promise);
 	}
-})
-
-.service('searchListService',function() {
-	this.searchList = [];
-	this.vulnerabilityList = [];
-
-	this.getSearchIndex = function(index) {
-		if (this.searchList.length > index)
-			return this.searchList[index];
-		else
-		    return null;
-	}
-
-	this.getVulnerabilityIndex = function(index) {
-		if (this.vulnerabilityList.length > index)
-			return this.vulnerabilityList[index];
-		else
-		    return null;
-	}
-
-	this.getSearchList = function() {
-		return this.searchList;
-	}
-
-	this.getVulnerabilityList = function() {
-		return this.vulnerabilityList;
-	}
-
-	this.setSearchList = function(searches){
-		this.searchList = searches;
-		this.vulnerabilityList = searches.vulnerabilities;
-	}
 });

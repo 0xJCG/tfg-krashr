@@ -1,5 +1,9 @@
-angular.module('myApp.searchesCtrl', []).
-    controller('SearchesCtrl', function($rootScope, $scope, $location, restClient, searchListService) {
+angular.module('myApp.searchesCtrl', [])
+
+.controller('SearchesCtrl', function($rootScope, $scope, $location, restClient) {
+    /* http://jsfiddle.net/2ZzZB/56/ */
+    $scope.currentPage = 0;
+    $scope.pageSize = 10;
 
     /* Hiding the warning DIVs. */
     $scope.no_search = true;
@@ -19,10 +23,10 @@ angular.module('myApp.searchesCtrl', []).
     function getAllSearches() {
         var user = JSON.parse(localStorage.getItem('user'));
         restClient.getAllSearches(user.name, user.pass).then(function(searches) {
-            if (searches.data) {
+            if (searches.data.length > 0) {
                 $scope.searching = true;
                 var s = searches.data;
-                searchListService.setSearchList(s);
+                //searchListService.setSearchList(s);
 			 	$scope.searches = s;
             } else {
                 $scope.no_search = false;
@@ -30,4 +34,4 @@ angular.module('myApp.searchesCtrl', []).
             }
         });
     }
-});
+})
