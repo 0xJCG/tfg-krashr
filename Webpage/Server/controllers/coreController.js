@@ -16,7 +16,6 @@ exports.saveResult = function(request, response) {
                         {safe: true, upsert: true, new : true},
                         function(err, model) {
                             console.log(err);
-                            console.log(model);
                         }
                     );
                     response.status(200).send(true);
