@@ -6,7 +6,7 @@ exports.saveResult = function(request, response) {
 	var b = request.body;
     User.findOne({USERNAME: b.USER}, function(error, user) {
 	    if (user) {
-	        Result.create({PROCESS: b.PROCESS, WEB: b.WEB, VULNERABILITY: b.VULNERABILITY, USER: b.USER}, function(error, result) { // Inserting the new user.
+	        Result.create({PROCESS: b.PROCESS, WEB: b.WEB, VULNERABILITY: b.VULNERABILITY, USER: b.USER, DATE: Date.now()}, function(error, result) { // Inserting the new user.
                 if (error)
                     response.status(500).send(false);
                 else {
