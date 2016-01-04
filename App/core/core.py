@@ -123,21 +123,22 @@ class Core(object):
                     return {"response": False}
 
                 url_list.put_url(self.url)
+
                 for action in self.actions:  # Going through the required modules by the API.
-                    print(action)
-                    if self.modules[action["module"]]:  # Looking if the required module is active.
-                        if action["number"] == 1:
+                    if action['module']:  # Looking if the required module is active.
+                        if action['number'] == 1:
                             from App.modules.crawler.module import main
                             url_list = main(process, self.url)
                         else:
-                            if action["number"] == 2:
+                            if action['number'] == 2:
                                 from App.modules.sqlinjection.module import main
                                 main(url_list, process, self.user)
-                            elif action["number"] == 3:
+                            elif action['number'] == 3:
                                 from App.modules.csrf.module import main
                                 main(url_list, process, self.user)
                             else:
                                 continue
+
                 db = DBAdapter()
                 db.update_process(process, 5)  # Status: 5, finished.
                 db.close_connection()
@@ -158,7 +159,7 @@ class Core(object):
         else:  # Wrong call.
             return {"response": False}
 
-        return {"response": True}  # If we get here, everything was right.
+        return True  # If we get here, everything was right.
 
 def main(petition):
     core = Core()
