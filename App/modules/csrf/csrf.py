@@ -6,7 +6,6 @@ __author_email__ = "Jonathan Castro, jonathancastrogonzalez at gmail dot com"
 
 import json
 import requests
-from threading import Thread
 from bs4 import BeautifulSoup
 
 from App.core.url import URL
