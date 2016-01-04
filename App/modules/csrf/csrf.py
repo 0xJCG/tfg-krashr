@@ -34,18 +34,20 @@ class CSRF(object):
             url = self.url_list.get_url()
             if url is None or type(url) is not URL:
                 break
-            content = url.get_content()
-            forms = content('form')
-            for form in forms:
-                inputs = form('input')
-                for i in inputs:
-                    t = i.get("type")
-                    if t == "hidden":
-                        name = i.get("name")
-                        if name == "hash" or name == "token" or name == "CSRFToken":
-                            return False
-                self.__save_results(url, 10)
-                return True
+
+            if url.is_online():
+                content = url.get_content()
+                forms = content('form')
+                for form in forms:
+                    inputs = form('input')
+                    for i in inputs:
+                        t = i.get("type")
+                        if t == "hidden":
+                            name = i.get("name")
+                            if name == "hash" or name == "token" or name == "CSRFToken":
+                                return False
+                    self.__save_results(url, 10)
+                    return True
         return True
 
     def __save_results(self, web, v_type):

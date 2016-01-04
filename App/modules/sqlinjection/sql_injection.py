@@ -105,9 +105,11 @@ class SQLInjection(object):
             url = self.url_list.get_url()
             if url is None or type(url) is not URL:
                 break
-            self.__authentication_attempt(url)
-            self.__error_based_sqli(url)
-            # self.__serialized_sqli(url)
+
+            if url.is_online():
+                self.__authentication_attempt(url)
+                self.__error_based_sqli(url)
+                # self.__serialized_sqli(url)
 
     def __authentication_attempt(self, url):
         web = url.get_content()
