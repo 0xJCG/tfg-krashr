@@ -12,7 +12,6 @@ from App.modules.crawler.crawler import Crawler
 def main(url, process):
     crawler = Crawler(url, process)
     aux = crawler.crawl()
-    print(aux)
     return aux
 
 if __name__ == "__main__":

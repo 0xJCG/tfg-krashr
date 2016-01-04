@@ -11,7 +11,7 @@ from App.core.url import URL
 class URLlist(object):
     def __init__(self):
         self.url_list = queue.Queue()
-        self.aux = []  # Stores all the urls that are or have been in the queue.
+        self.aux = set()  # Stores all the urls that are or have been in the queue.
 
     def get_list(self):
         return self.url_list
@@ -22,7 +22,7 @@ class URLlist(object):
     def put_url(self, url):
         if url not in self.aux:
             self.url_list.put(URL(url))
-            self.aux.append(url)
+            self.aux.add(url)
             return True
         return False
 

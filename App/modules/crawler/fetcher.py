@@ -6,17 +6,15 @@ __author_email__ = "Jonathan Castro, jonathancastrogonzalez at gmail dot com"
 
 import requests
 from bs4 import BeautifulSoup
+from urllib.parse import urljoin
 from urllib.parse import urlsplit
 
 class Fetcher(object):
     def __init__(self, url):
         self.url = url
-        self.urls = []
+        self.urls = set()
         # http://stackoverflow.com/questions/9626535/get-domain-name-from-url
         self.domain = "{0.scheme}://{0.netloc}/".format(urlsplit(url))
-
-    def __getitem__(self, x):
-        return self.urls[x]
 
     def fetch(self):
         tags = []
@@ -30,9 +28,9 @@ class Fetcher(object):
             for tag in tags:
                 href = tag.get("href")
                 domain = "{0.scheme}://{0.netloc}/".format(urlsplit(href))
-                if domain == ":///": # The link may be relative.
+                if domain == ":///":  # The link may be relative.
                     domain = self.domain
-                    href = domain + href
-                if href is not None and href not in self.urls and domain == self.domain:
-                    self.urls.append(href)
+                    href = urljoin(self.url, href)
+                if href is not None and domain == self.domain:
+                    self.urls.add(href)
         return self.urls
