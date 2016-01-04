@@ -134,7 +134,7 @@ class Core(object):
                                 from App.modules.sqlinjection.module import main
                                 main(url_list, process, self.user)
                             elif action["number"] == 3:
-                                from App.modules.incorrectsecurity.module import main
+                                from App.modules.csrf.module import main
                                 main(url_list, process, self.user)
                             else:
                                 continue

@@ -146,7 +146,7 @@ exports.search = function(request, response) {
                     },
                     {
                         "number": 3,
-                        "module": "incorrectsecurity"
+                        "module": "csrf"
                     }
                 ]
             }

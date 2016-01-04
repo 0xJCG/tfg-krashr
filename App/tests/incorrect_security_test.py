@@ -7,7 +7,7 @@ __author_email__ = "Jonathan Castro, jonathancastrogonzalez at gmail dot com"
 import unittest
 
 from App.core.url_list import URLlist
-from App.modules.incorrectsecurity.incorrect_security import IncorrectSecurity
+from App.modules.csrf.csrf import CSRF
 
 class IncorrectSecurityTest(unittest.TestCase):
     def setUp(self):
@@ -16,14 +16,14 @@ class IncorrectSecurityTest(unittest.TestCase):
     def test_search_security_flaws(self):
         url_list = URLlist()
         url_list.put_url("http://pvulpix.hol.es/is.html")
-        ict = IncorrectSecurity(url_list)
-        self.assertEqual(ict.search_security_flaws(), True)
+        csrf = CSRF(url_list, 1, 1)
+        self.assertEqual(csrf.search_security_flaws(), True)
 
     def test_search_security_flaws2(self):
         url_list = URLlist()
         url_list.put_url("http://pvulpix.hol.es/is2.html")
-        ict = IncorrectSecurity(url_list)
-        self.assertEqual(ict.search_security_flaws(), False)
+        csrf = CSRF(url_list, 1, 1)
+        self.assertEqual(csrf.search_security_flaws(), False)
 
 if __name__ == '__main__':
     unittest.main()

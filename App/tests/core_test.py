@@ -43,7 +43,7 @@ class CoreTest(unittest.TestCase):
     # def test_check_modules(self):
     #    self.core.check_modules()
     #    self.assertEqual(self.core.modules["crawler"], True)
-    #    self.assertEqual(self.core.modules["incorrectsecurity"], True)
+    #    self.assertEqual(self.core.modules["csrf"], True)
     #    self.assertEqual(self.core.modules["sqlinjection"], True)
 
     def test_check_call(self):

@@ -15,7 +15,7 @@ from App.core.db_adapter import DBAdapter
 
 api = "http://localhost:3000/saveresult"
 
-class IncorrectSecurity(object):
+class CSRF(object):
     def __init__(self, url_list, process, user):
         self.process = process
         self.user = user
@@ -26,7 +26,7 @@ class IncorrectSecurity(object):
             self.url_list = url_list
 
         db = DBAdapter()
-        db.update_process(process, 4)  # Status: 4, incorrect security search.
+        db.update_process(process, 4)  # Status: 4, csrf search.
         db.close_connection()
 
     def search_security_flaws(self):
@@ -42,7 +42,7 @@ class IncorrectSecurity(object):
                     t = i.get("type")
                     if t == "hidden":
                         name = i.get("name")
-                        if name == "hash":
+                        if name == "hash" or name == "token" or name == "CSRFToken":
                             return False
                 self.__save_results(url, 10)
                 return True
