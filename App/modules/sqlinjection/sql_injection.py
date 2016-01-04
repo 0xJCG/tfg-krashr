@@ -7,8 +7,9 @@ __author_email__ = "Jonathan Castro, jonathancastrogonzalez at gmail dot com"
 import json
 import requests
 import urllib.parse
-from threading import Thread
 from bs4 import BeautifulSoup
+from urllib.parse import urljoin
+from urllib.parse import urlsplit
 
 from App.core.url import URL
 from App.core.url_list import URLlist
@@ -116,6 +117,9 @@ class SQLInjection(object):
         forms = web('form')
         for form in forms:
             action = form.get("action")
+            domain = "{0.scheme}://{0.netloc}/".format(urlsplit(action))
+            if domain == ":///":  # The link may be relative.
+                action = urljoin(url.get_url(), action)
             inputs = form('input')
             data = []
             input_text_counter = 0
@@ -176,15 +180,15 @@ class SQLInjection(object):
         return params
 
     def __save_results(self, web, v_type):
+        w = web.get_url()
         db = DBAdapter()
-        db.vulnerability_found(self.process, web, v_type)
+        db.vulnerability_found(self.process, w, v_type)
         db.close_connection()
 
         data = {
             "PROCESS": self.process,
-            "WEB": web,
+            "WEB": w,
             "VULNERABILITY": v_type,
             "USER": self.user
         }
-        t = Thread(requests.post(api, data=json.dumps(data)))
-        t.start()
+        requests.post(api, json=data)

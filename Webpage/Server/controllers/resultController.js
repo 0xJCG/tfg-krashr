@@ -145,29 +145,24 @@ exports.search = function(request, response) {
                         "module": "crawler"
                     },
                     {
+                        "number": 2,
+                        "module": "sqlinjection"
+                    },
+                    {
                         "number": 3,
-                        "module": "csrf"
+                        "module": "crsf"
                     }
                 ]
             }
 
-            // http://stackoverflow.com/questions/8407460/sending-data-from-node-js-to-java-using-sockets
-			// Opening a socket to communicate with the Python server.
-            var net = require('net');
-            var socket = new JsonSocket(new net.Socket()); //Decorate a standard net.Socket with JsonSocket
-            socket.connect(9999, '127.0.0.1');
-            socket.on('connect', function() { //Don't send until we're connected
-                socket.sendMessage(msg);
-                socket.on('data', function(data) {
-                    if (data) {
-                        // Logging.
-                        new Log({ACTION: "Web searched", USERNAME: b.USERNAME, WEB: b.WEB, IP: ip, BROWSER: browser}).save(function(error) {
-                            if (error)
-                                console.log(error);
-                        });
-                    }
-
-                });
+            // https://github.com/sebastianseilund/node-json-socket
+            JsonSocket.sendSingleMessage(9999, '127.0.0.1', msg, function(err) {
+                if (!err) {
+                    new Log({ACTION: "Web searched", USERNAME: b.USERNAME, WEB: b.WEB, IP: ip, BROWSER: browser}).save(function(error) {
+                    if (error)
+                        console.log(error);
+                    });
+                }
             });
 			response.status(200).send(true);
 		} else
