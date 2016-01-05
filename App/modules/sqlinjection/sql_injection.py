@@ -95,10 +95,10 @@ class SQLInjection(object):
 
         # https://www.owasp.org/images/5/52/OWASP_Testing_Guide_v4.pdf, page 111.
         self.sql_errors = {
-            'MySQL': 'You have an error in your SQL syntax',
-            'MSSQL': 'Microsoft SQL Native Client error',
-            'Oracle': 'ORA-00933: SQL command not properly ended',
-            'PostgreSQL': 'Query failed: ERROR: syntax error at or near'
+            'MySQL': 'you have an error in your sql syntax',
+            'MSSQL': 'microsoft sql native client error',
+            'Oracle': 'ora-00933: sql command not properly ended',
+            'PostgreSQL': 'query failed: error: syntax error at or near'
         }
 
     def search_injections(self):
@@ -150,13 +150,13 @@ class SQLInjection(object):
 
     def __error_based_sqli(self, url):
         params = self.__get_parameters(url.get_url())
-        domain = "{0.scheme}://{0.netloc}/".format(urllib.parse.urlsplit(url.get_url()))
+        u = "{0.scheme}://{0.netloc}{0.path}".format(urllib.parse.urlsplit(url.get_url()))
         for x, y in params:
             for p in self.error_based_sqli_param_data:
                 data = {
                     x: p
                 }
-                r = requests.get(domain, data=urllib.parse.urlencode(data))
+                r = requests.get(u, params=urllib.parse.urlencode(data))
                 response = r.text
                 for d, e in self.sql_errors.items():
                     if e in response.lower():
