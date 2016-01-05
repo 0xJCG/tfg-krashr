@@ -15,9 +15,7 @@ __author_email__ = "Jonathan Castro, jonathancastrogonzalez at gmail dot com"
 
 import os
 import sys
-import json
-import requests
-from threading import Thread
+import copy
 from jsonschema import validate
 
 from App.core.url import URL

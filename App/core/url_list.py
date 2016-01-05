@@ -31,6 +31,9 @@ class URLlist(object):
             aux = self.url_list.get(block=False)
             return aux
         except queue.Empty:
+            # Filling the queue again for next use.
+            for u in self.aux:
+                self.url_list.put(URL(u))
             return None
 
 if __name__ == '__main__':
