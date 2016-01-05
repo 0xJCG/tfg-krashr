@@ -15,7 +15,7 @@ exports.saveResult = function(request, response) {
                         {$push: {RESULTS: result._id}},
                         {safe: true, upsert: true, new : true},
                         function(err, model) {
-                            console.log(err);
+                            if (err) console.log(err);
                         }
                     );
                     response.status(200).send(true);
