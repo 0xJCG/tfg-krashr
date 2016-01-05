@@ -185,10 +185,17 @@ class SQLInjection(object):
         db.vulnerability_found(self.process, w, v_type)
         db.close_connection()
 
+        if v_type == 1:
+            v = "Authentication attempt"
+        elif v_type == 2:
+            v = "Error based SQL injection"
+        else:
+            v = "SQL injection"
+
         data = {
             "PROCESS": self.process,
             "WEB": w,
-            "VULNERABILITY": v_type,
+            "VULNERABILITY": v,
             "USER": self.user
         }
         requests.post(api, json=data)

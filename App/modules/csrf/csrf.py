@@ -58,7 +58,7 @@ class CSRF(object):
         data = {
             "PROCESS": self.process,
             "WEB": w,
-            "VULNERABILITY": v_type,
+            "VULNERABILITY": "CSRF",
             "USER": self.user
         }
         requests.post(api, json=data)
