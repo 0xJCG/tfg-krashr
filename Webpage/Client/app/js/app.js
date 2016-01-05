@@ -14,15 +14,9 @@ angular.module('myApp', ['ngRoute', 'myApp.services', 'myApp.mainCtrl', 'myApp.p
 	};
 })
 
-.directive('vulnerabilities', function() {
+.directive('result', function() {
 	return {
-		templateUrl:'templates/directives/vulnerabilities.html'
-	};
-})
-
-.directive('vulnerability', function() {
-	return {
-		templateUrl:'templates/directives/vulnerability.html'
+		templateUrl:'templates/directives/result.html'
 	};
 })
 
@@ -56,10 +50,3 @@ angular.module('myApp', ['ngRoute', 'myApp.services', 'myApp.mainCtrl', 'myApp.p
             redirectTo: '/main'
         });
 }])
-
-.filter('startFrom', function() {
-    return function(input, start) {
-        start = +start; //parse to int
-        return input.slice(start);
-    }
-});

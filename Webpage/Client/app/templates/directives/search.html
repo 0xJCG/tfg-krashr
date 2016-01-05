@@ -1,10 +1,8 @@
-<div class="panel panel-primary" ui-sref="edition({search_ID: $index})">
+<div class="panel panel-primary">
     <div class="panel-heading">
-        <h3 class="panel-title">Information about the result</h3>
+        <h3 class="panel-title">Information about the search</h3>
     </div>
     <div class="panel-body">
-        <p>URL: <a href={{search.WEB}}>{{search.WEB}}</a>.</p>
-        <p>Date: {{search.DATE | date:'medium'}}.</p>
-        <p>Vulnerability: {{search.VULNERABILITY}}.</p>
+        <result ng-repeat="result in search"></result>
     </div>
 </div>
