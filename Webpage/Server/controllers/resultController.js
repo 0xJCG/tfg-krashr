@@ -31,11 +31,28 @@ exports.getAllResults = function(request, response) {
                     if (error)
                         console.log(error);
                 });
+                r = {};//new Array();
+                for (i = 0; i < user.RESULTS.length; i++) {
+                    r[user.RESULTS[i].PROCESS] = new Array();
+                    r[user.RESULTS[i].PROCESS][user.RESULTS[i].WEB] = new Array();
+                    r[user.RESULTS[i].PROCESS][user.RESULTS[i].WEB][user.RESULTS[i].VULNERABILITY] = user.RESULTS[i].DATE
+                }
+                console.log(r);
 			    response.status(200).send(user.RESULTS);
 			} else
 			    response.status(200).send(false);
 		}
 	});
+	/*console.log("JEJEJE");
+    Result.aggregate([{ $group : { _id : "$PROCESS", Results: { $push: "$$ROOT" } } }], function( e, r ) {
+        if ( e ) {console.log(e); return;}
+        console.log(r)
+        User.populate(r, {path: "RESULTS"}, function( e, u ) {
+            if ( e ) {console.log(e); return;}
+
+            console.log(u);
+        });
+    });*/
 };
 
 exports.getResult = function(request, response) {

@@ -86,7 +86,7 @@ class SQLInjection(object):
         ]
 
         self.error_based_sqli_param_data = [
-            '\'"',
+            '\'',
             'A%\' and 1=1--',
             'A%\' and 1=2--'
         ]
@@ -158,7 +158,7 @@ class SQLInjection(object):
                 }
                 r = requests.get(domain, data=urllib.parse.urlencode(data))
                 response = r.text
-                for d, e in self.sql_errors:
+                for d, e in self.sql_errors.items():
                     if e in response.lower():
                         self.__save_results(url, 2)
                         return True
