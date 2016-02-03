@@ -46,6 +46,15 @@ angular.module('myApp', ['ngRoute', 'myApp.services', 'myApp.mainCtrl', 'myApp.p
             templateUrl: 'templates/updatepassword.html',
             controller: 'PasswordCtrl'
         }).
+        when('/serviceconditions', {
+            templateUrl: 'templates/serviceconditions.html'
+        }).
+        when('/privacypolicy', {
+            templateUrl: 'templates/privacypolicy.html'
+        }).
+        when('/cookiespolicy', {
+            templateUrl: 'templates/cookiespolicy.html'
+        }).
         otherwise({
             redirectTo: '/main'
         });

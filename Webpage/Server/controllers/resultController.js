@@ -6,7 +6,7 @@ var mongoose = require('mongoose'),
 	User = mongoose.model('User'),
 	Log = mongoose.model('Log');
 
-exports.getAllResults = function(request, response) {
+exports.getResults = function(request, response) {
 	var b = request.body, // Getting the data from the request.
         ip = request.headers['x-forwarded-for'] || // http://stackoverflow.com/questions/8107856/how-to-determine-a-users-ip-address-in-node
         request.connection.remoteAddress ||
@@ -22,7 +22,8 @@ exports.getAllResults = function(request, response) {
             console.log(error);
     });
 
-	User.findOne({USERNAME: b.USERNAME}).populate('RESULTS').exec(function(error, user) {
+	/*User.findOne({USERNAME: b.USERNAME}).skip(b.SKIP * b.LIMIT).limit(b.LIMIT).populate('RESULTS').exec(function(error, user) {*/
+	User.findOne({USERNAME: b.USERNAME}).limit(b.LIMIT).populate('RESULTS').exec(function(error, user) {
 	    if (error || user == null) {
 			response.status(500).send();
 		} else {
@@ -35,8 +36,48 @@ exports.getAllResults = function(request, response) {
 
                 // http://stackoverflow.com/questions/11090817/group-by-order-by-on-json-data-using-javascript-jquery
                 var r = _.chain(user.RESULTS).sortBy("DATE", "WEB").groupBy("PROCESS", "WEB").value();
+                /*var s = slice(r, b.SKIP * b.LIMIT, b.LIMIT);*/
 
 			    response.status(200).send(r);
+			} else
+			    response.status(200).send(false);
+		}
+	});
+};
+
+exports.getNumberResults = function(request, response) {
+	var b = request.body, // Getting the data from the request.
+        ip = request.headers['x-forwarded-for'] || // http://stackoverflow.com/questions/8107856/how-to-determine-a-users-ip-address-in-node
+        request.connection.remoteAddress ||
+        request.socket.remoteAddress ||
+        request.connection.socket.remoteAddress,
+        parser = new UAParser(), // http://stackoverflow.com/questions/6163350/server-side-browser-detection-node-js
+        ua = request.headers['user-agent'],
+        browser = parser.setUA(ua).getBrowser().name + " " + parser.setUA(ua).getBrowser().version;
+
+    // Logging.
+	new Log({ACTION: "Getting number of results attempt", USERNAME: b.USERNAME, IP: ip, BROWSER: browser}).save(function(error) {
+        if (error)
+            console.log(error);
+    });
+
+	User.findOne({USERNAME: b.USERNAME}).populate('RESULTS').exec(function(error, user) {
+	    if (error || user == null) {
+			response.status(500).send();
+		} else {
+			if (user.PASSWORD == b.PASSWORD) {
+			    // Logging.
+                new Log({ACTION: "Number of results got", USERNAME: b.USERNAME, IP: ip, BROWSER: browser}).save(function(error) {
+                    if (error)
+                        console.log(error);
+                });
+
+                // http://stackoverflow.com/questions/11090817/group-by-order-by-on-json-data-using-javascript-jquery
+                var r = _.chain(user.RESULTS).sortBy("DATE", "WEB").groupBy("PROCESS", "WEB").value();
+
+                var d = {length: Object.keys(r).length}
+
+                response.status(200).send(d);
 			} else
 			    response.status(200).send(false);
 		}
@@ -174,3 +215,23 @@ exports.search = function(request, response) {
 			response.status(200).send(false);
 	});
 };
+
+/**
+ * http://stackoverflow.com/questions/4401120/get-a-slice-of-a-javascript-associative-array
+ * Slices the object. Note that returns a new spliced object,
+ * e.g. do not modifies original object. Also note that that sliced elements
+ * are sorted alphabetically by object property name.
+ */
+function slice(obj, start, end) {
+
+    var sliced = {};
+    var i = 0;
+    for (var k in obj) {
+        if (i >= start && i < end)
+            sliced[k] = obj[k];
+
+        i++;
+    }
+
+    return sliced;
+}

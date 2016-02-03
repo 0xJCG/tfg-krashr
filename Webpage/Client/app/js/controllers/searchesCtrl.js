@@ -1,10 +1,6 @@
-angular.module('myApp.searchesCtrl', [])
+angular.module('myApp.searchesCtrl', ['ui.bootstrap'])
 
 .controller('SearchesCtrl', function($rootScope, $scope, $location, restClient) {
-    /* http://jsfiddle.net/2ZzZB/56/ */
-    $scope.currentPage = 0;
-    $scope.pageSize = 10;
-
     /* Hiding the warning DIVs. */
     $scope.no_search = true;
 
@@ -18,21 +14,49 @@ angular.module('myApp.searchesCtrl', [])
     $rootScope.menu_sign_in = true;
     $rootScope.menu_profile = true;
 
-    getAllSearches();
+    $scope.searches = {},
+    $scope.currentPage = 1,
+    $scope.numPerPage = 10,
+    $scope.maxSize = 5;
 
-    function getAllSearches() {
+    $scope.getNumberSearches = function() {
         var user = JSON.parse(localStorage.getItem('user'));
-        restClient.getAllSearches(user.name, user.pass).then(function(searches) {
+        restClient.getNumberSearches(user.name, user.pass).then(function(number) {
+            $scope.totalItems = number.data.length;
+        });
+    }
+
+    $scope.getNumberSearches();
+
+    $scope.getAllSearches = function() {
+        var user = JSON.parse(localStorage.getItem('user'));
+        restClient.getSearches(user.name, user.pass, 0, 0).then(function(searches) {
             if (searches.data) {
                 $scope.searching = true;
-                var s = searches.data;
-                console.log(s);
-                //searchListService.setSearchList(s);
-			 	$scope.searches = s;
+                $scope.searches = searches.data;
             } else {
                 $scope.no_search = false;
                 $scope.searching = true;
             }
         });
     }
+
+    $scope.getAllSearches();
+
+    // Pagination: http://plnkr.co/edit/81fPZxpnOQnIHQgp957q?p=preview
+    /*$scope.$watch('currentPage + numPerPage', function() {
+        var user = JSON.parse(localStorage.getItem('user'));
+        restClient.getSearches(user.name, user.pass, $scope.currentPage - 1, $scope.numPerPage).then(function(searches) {
+        console.log(searches.data);
+            if (searches.data) {
+                $scope.searching = true;
+                $scope.no_search = true;
+                var s = searches.data;
+			 	$scope.searches = s;
+            } else {
+                $scope.no_search = false;
+                $scope.searching = true;
+            }
+        });
+    });*/
 })

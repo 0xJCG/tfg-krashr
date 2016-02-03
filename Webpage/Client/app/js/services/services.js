@@ -91,13 +91,28 @@ angular.module('myApp.services', [])
 		return(promise);
 	}
 
-	this.getAllSearches = function(USERNAME, PASSWORD) {
+	this.getSearches = function(USERNAME, PASSWORD, SKIP, LIMIT) {
+		var request = new Object();
+
+		request.USERNAME = USERNAME;
+		request.PASSWORD = PASSWORD;
+		request.SKIP = SKIP;
+		request.LIMIT = LIMIT;
+
+		var promise = $http.post(direction + '/results', request).success(function(validation) {
+			return(validation);
+		});
+
+		return(promise);
+	}
+
+	this.getNumberSearches = function(USERNAME, PASSWORD) {
 		var request = new Object();
 
 		request.USERNAME = USERNAME;
 		request.PASSWORD = PASSWORD;
 
-		var promise = $http.post(direction + '/results', request).success(function(validation) {
+		var promise = $http.post(direction + '/nresults', request).success(function(validation) {
 			return(validation);
 		});
 

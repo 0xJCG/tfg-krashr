@@ -41,7 +41,8 @@ router.route('/updatepassword').post(userController.updatePassword);
 router.route('/getprofile').post(userController.getUserInfo);
 
 router.route('/results/:process').post(resultController.getResult);
-router.route('/results').post(resultController.getAllResults);
+router.route('/results').post(resultController.getResults);
+router.route('/nresults').post(resultController.getNumberResults);
 router.route('/currentresult').post(resultController.getCurrentResult);
 router.route('/search').post(resultController.search);
 
