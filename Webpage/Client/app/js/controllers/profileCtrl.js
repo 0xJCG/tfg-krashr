@@ -1,15 +1,20 @@
 angular.module('myApp.profileCtrl', []).
     controller('ProfileCtrl', function($rootScope, $scope, $location, restClient) {
 
+    if (!localStorage.getItem("user"))
+        $location.path("/signin");
+
+    /* Changing the menu. */
+    $rootScope.menu_sign_in = true;
+    $rootScope.menu_profile = true;
+    $rootScope.user = JSON.parse(localStorage.getItem('user')).name;
+
     /* Hiding the warning DIVs. */
     $scope.pass = true;
     $scope.impossible = true;
     $scope.r_impossible = true;
     $scope.successful = true;
     $scope.in_data = true;
-
-    if (!localStorage.getItem("user"))
-        $location.path("/signin");
 
     getProfile();
 

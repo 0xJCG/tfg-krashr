@@ -7,6 +7,7 @@ angular.module('myApp.passwordCtrl', []).
     /* Changing the menu. */
     $rootScope.menu_sign_in = true;
     $rootScope.menu_profile = true;
+    $rootScope.user = JSON.parse(localStorage.getItem('user')).name;
 
 	/* Hiding the warning DIVs. */
     $scope.data = true;
@@ -14,14 +15,6 @@ angular.module('myApp.passwordCtrl', []).
     $scope.oldpass = true;
     $scope.updatepass = true;
     $scope.successful = true;
-
-    $scope.helpPass = function() {
-
-    }
-
-    $scope.helpPass2 = function() {
-
-    }
 
     $scope.updatePassword = function() {
         var oldPass = $scope.oldpass;

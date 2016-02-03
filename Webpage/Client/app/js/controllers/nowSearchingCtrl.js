@@ -15,6 +15,7 @@ angular.module('myApp.nowSearchingCtrl', []).
     /* Changing the menu. */
     $rootScope.menu_sign_in = true;
     $rootScope.menu_profile = true;
+    $rootScope.user = JSON.parse(localStorage.getItem('user')).name;
 
     getActualSearch();
 

@@ -13,6 +13,7 @@ angular.module('myApp.searchesCtrl', ['ui.bootstrap'])
     /* Changing the menu. */
     $rootScope.menu_sign_in = true;
     $rootScope.menu_profile = true;
+    $rootScope.user = JSON.parse(localStorage.getItem('user')).name;
 
     $scope.searches = {},
     $scope.currentPage = 1,
