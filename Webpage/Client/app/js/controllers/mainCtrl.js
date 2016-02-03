@@ -7,6 +7,7 @@ angular.module('myApp.mainCtrl', []).
     } else {
         $rootScope.menu_sign_in = true;
         $rootScope.menu_profile = true;
+        $rootScope.user = JSON.parse(localStorage.getItem('user')).name;
     }
 
     /* Hiding the warning DIVs. */
