@@ -26,3 +26,30 @@
 .nav-tabs.centered, .nav-pills.centered {
     text-align:center;
 }
+
+/* http://stackoverflow.com/questions/11555931/make-footer-stick-to-bottom-of-page-using-twitter-bootstrap */
+html,body{
+    height: 100%
+}
+
+#holder{
+    min-height: 100%;
+    position: relative;
+}
+
+#ng-view {
+    padding-bottom: 40px;    /* height of footer */
+}
+
+footer {
+    height: 40px;
+    width: 100%;
+    position: absolute;
+    left: 0;
+    bottom: -40px;
+}
+
+/* http://stackoverflow.com/questions/22904102/how-to-change-the-background-color-of-jumbrotron */
+.jumbotron {
+    background-color:transparent !important;
+}
