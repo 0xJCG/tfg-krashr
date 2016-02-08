@@ -39,6 +39,7 @@ router.route('/signup').post(userController.signUp);
 router.route('/updateprofile').post(userController.updateUserInfo);
 router.route('/updatepassword').post(userController.updatePassword);
 router.route('/getprofile').post(userController.getUserInfo);
+router.route('/removeuser').post(userController.removeUser);
 
 router.route('/results/:process').post(resultController.getResult);
 router.route('/results').post(resultController.getResults);

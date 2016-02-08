@@ -72,6 +72,41 @@ angular.module('myApp.profileCtrl', []).
         }
     }
 
+    $scope.removeUser = function() {
+        if (!$scope.firstname || !$scope.lastname || !$scope.password) {
+            $scope.pass = true;
+            $scope.impossible = true;
+            $scope.r_impossible = true;
+            $scope.successful = true;
+            $scope.in_data = false;
+        } else {
+            if (window.confirm("You are about to delete your account. Do you really want to delete it?")) {
+                var user = JSON.parse(localStorage.getItem('user'));
+                var pass = sha512($scope.password)
+                if (user.pass == pass) {
+                    restClient.removeUser(user.name, user.pass).then(function(removed) {
+                        if (removed) {
+                            localStorage.removeItem('user');
+                            localStorage.clear();
+                            $location.path('/main');
+                        } else
+                            $scope.pass = false;
+                            $scope.impossible = true;
+                            $scope.r_impossible = true;
+                            $scope.successful = true;
+                            $scope.in_data = true;
+                    });
+                } else  {
+                    $scope.pass = false;
+                    $scope.impossible = true;
+                    $scope.r_impossible = true;
+                    $scope.successful = true;
+                    $scope.in_data = true;
+                }
+            }
+        }
+    }
+
     $scope.signOut = function() {
         localStorage.removeItem('user');
         localStorage.clear();

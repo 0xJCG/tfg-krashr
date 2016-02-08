@@ -209,3 +209,47 @@ exports.getUserInfo = function(request, response) {
 		}
 	});
 };
+
+exports.removeUser = function(request, response) {
+	var b = request.body, // Getting the data from the request.
+        ip = request.headers['x-forwarded-for'] || // http://stackoverflow.com/questions/8107856/how-to-determine-a-users-ip-address-in-node
+        request.connection.remoteAddress ||
+        request.socket.remoteAddress ||
+        request.connection.socket.remoteAddress,
+        parser = new UAParser(), // http://stackoverflow.com/questions/6163350/server-side-browser-detection-node-js
+        ua = request.headers['user-agent'],
+        browser = parser.setUA(ua).getBrowser().name + " " + parser.setUA(ua).getBrowser().version;
+
+	// Logging.
+	new Log({ACTION: "User removing attempt", USERNAME: b.USERNAME, IP: ip, BROWSER: browser}).save(function(error) {
+        if (error)
+            console.log(error);
+    });
+
+	User.findOne({USERNAME: b.USERNAME}, function(error, user) { // We have to search the user to know if exists.
+		if (error) { // Doesn't exist.
+			response.status(500).send(false);
+		} else { // Exists.
+			if (user.PASSWORD == b.PASSWORD) { // The passwords must be the same.
+				User.findByIdAndRemove( // Removing the user.
+				    user._id,
+                    function(error) {
+                        if (error) // If it hasn't been able to remove the user...
+                            response.status(500).send(); // ...sending an error.
+                        else {
+                            // Logging.
+                            new Log({ACTION: "User removed", USERNAME: b.USERNAME, IP: ip, BROWSER: browser}).save(function(error) {
+                                if (error)
+                                    console.log(error);
+                            });
+                            response.status(200).send(true); // If there is all OK, sending 200 OK code.
+                        }
+                    }
+                );
+			} else { // Passwords don't match.
+				response.status(200).send(false);
+			}
+
+		}
+	});
+};

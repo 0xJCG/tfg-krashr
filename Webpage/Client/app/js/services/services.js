@@ -131,4 +131,17 @@ angular.module('myApp.services', [])
 
 		return(promise);
 	}
+
+	this.removeUser = function(USERNAME, PASSWORD) {
+		var request = new Object();
+
+		request.USERNAME = USERNAME;
+		request.PASSWORD = PASSWORD;
+
+		var promise = $http.post(direction + '/removeuser', request).success(function(validation) {
+			return(validation);
+		});
+
+		return(promise);
+	}
 });
