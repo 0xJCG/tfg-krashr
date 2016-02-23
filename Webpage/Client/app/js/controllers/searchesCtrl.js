@@ -32,7 +32,7 @@ angular.module('myApp.searchesCtrl', ['ui.bootstrap'])
     $scope.getAllSearches = function() {
         var user = JSON.parse(localStorage.getItem('user'));
         restClient.getSearches(user.name, user.pass, 0, 0).then(function(searches) {
-            if (searches.data) {
+            if (Object.keys(searches.data).length > 0) {
                 $scope.searching = true;
                 $scope.searches = searches.data;
             } else {
