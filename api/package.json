@@ -1,0 +1,21 @@
+{
+  "name": "Krashr API",
+  "private": true,
+  "version": "0.5.0",
+  "description": "An API to search vulnerabilities within webpages",
+  "author": {
+    "name": "Jonathan Castro"
+  },
+  "repository": "https://github.com/0xJCG/tfg-krashr",
+  "license": "GPL v2.0",
+  "devDependencies": {
+    "express": "^4.13.3",
+    "body-parser": "^1.14.1",
+    "method-override": "^2.3.5",
+    "json-socket": "^0.1.2",
+    "mongoose": "^4.3.1",
+    "ua-parser-js": "^0.7.9",
+    "underscore": "^1.8.3",
+    "alasql": "^0.2.1"
+  }
+}

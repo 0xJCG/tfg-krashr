@@ -36,7 +36,6 @@ exports.getResults = function(request, response) {
 
                 // http://stackoverflow.com/questions/11090817/group-by-order-by-on-json-data-using-javascript-jquery
                 var r = _.chain(user.RESULTS).sortBy("DATE", "WEB").groupBy("PROCESS", "WEB").value();
-                /*var s = slice(r, b.SKIP * b.LIMIT, b.LIMIT);*/
 
 			    response.status(200).send(r);
 			} else
@@ -215,23 +214,3 @@ exports.search = function(request, response) {
 			response.status(200).send(false);
 	});
 };
-
-/**
- * http://stackoverflow.com/questions/4401120/get-a-slice-of-a-javascript-associative-array
- * Slices the object. Note that returns a new spliced object,
- * e.g. do not modifies original object. Also note that that sliced elements
- * are sorted alphabetically by object property name.
- */
-function slice(obj, start, end) {
-
-    var sliced = {};
-    var i = 0;
-    for (var k in obj) {
-        if (i >= start && i < end)
-            sliced[k] = obj[k];
-
-        i++;
-    }
-
-    return sliced;
-}
