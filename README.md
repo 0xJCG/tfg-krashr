@@ -31,7 +31,7 @@ sudo pip install jsonschema
 To finish, it is necessary to change the "db_adapter.py" in the "core" folder to enter the information about the database and run the back-end:
 
 ```
-cd back-end/search-motor/core/
+cd backend/core/
 python server.py
 ```
 
@@ -62,7 +62,7 @@ node app.js
 The Frond-end is coded using AngularJS and Bootstrap. The main components are already installed, so it can be initiated:
 
 ```
-cd front-end
+cd frontend
 npm start
 ```
 

@@ -1,12 +1,11 @@
-__version__ = "0.1"
-__copyright__ = "CopyRight (C) 2015 by Jonathan Castro"
-__license__ = "Proprietary"
+__version__ = "0.5.0"
+__license__ = "GPL v2.0"
 __author__ = "Jonathan Castro"
 __author_email__ = "Jonathan Castro, jonathancastrogonzalez at gmail dot com"
 
-from App.core.url_list import URLlist
-from App.core.db_adapter import DBAdapter
-from App.modules.crawler.fetcher import Fetcher
+from backend.core.url_list import URLlist
+from backend.core.db_adapter import DBAdapter
+from backend.modules.crawler.fetcher import Fetcher
 
 class Crawler(object):
     def __init__(self, process, root):

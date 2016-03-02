@@ -7,9 +7,8 @@ Core class.
 
 """
 
-__version__ = "0.1"
-__copyright__ = "CopyRight (C) 2015 by Jonathan Castro"
-__license__ = "Proprietary"
+__version__ = "0.5.0"
+__license__ = "GPL v2.0"
 __author__ = "Jonathan Castro"
 __author_email__ = "Jonathan Castro, jonathancastrogonzalez at gmail dot com"
 
@@ -18,9 +17,9 @@ import sys
 import copy
 from jsonschema import validate
 
-from App.core.url import URL
-from App.core.url_list import URLlist
-from App.core.db_adapter import DBAdapter
+from backend.core.url import URL
+from backend.core.url_list import URLlist
+from backend.core.db_adapter import DBAdapter
 
 search_schema = {
     "title": "JSON from API",
@@ -125,14 +124,14 @@ class Core(object):
                 for action in self.actions:  # Going through the required modules by the API.
                     if action['module']:  # Looking if the required module is active.
                         if action['number'] == 1:
-                            from App.modules.crawler.module import main
+                            from backend.modules.crawler.module import main
                             url_list = main(process, self.url)
                         else:
                             if action['number'] == 2:
-                                from App.modules.sqlinjection.module import main
+                                from backend.modules.sqlinjection.module import main
                                 main(url_list, process, self.user)
                             elif action['number'] == 3:
-                                from App.modules.csrf.module import main
+                                from backend.modules.csrf.module import main
                                 main(url_list, process, self.user)
                             else:
                                 continue

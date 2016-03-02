@@ -3,16 +3,15 @@
     http://stackoverflow.com/questions/17667903/python-socket-receive-large-amount-of-data
 """
 
-# __version__ = "0.1"
-# __copyright__ = "CopyRight (C) 2015 by Jonathan Castro"
-# __license__ = "Proprietary"
-# __author__ = "Jonathan Castro"
-# __author_email__ = "Jonathan Castro, jonathancastrogonzalez at gmail dot com"
+__version__ = "0.5.0"
+__license__ = "GPL v2.0"
+__author__ = "Jonathan Castro"
+__author_email__ = "Jonathan Castro, jonathancastrogonzalez at gmail dot com"
 
 import json
 import socketserver
 
-from App.core.core import Core
+from backend.core.core import Core
 
 class Service(socketserver.BaseRequestHandler):
     def handle(self):

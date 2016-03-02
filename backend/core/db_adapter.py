@@ -8,9 +8,8 @@ PostgreSQL adapter.
     http://stackoverflow.com/questions/20789063/get-fatal-error-when-install-psycopg2
 """
 
-__version__ = "0.1"
-__copyright__ = "CopyRight (C) 2015 by Jonathan Castro"
-__license__ = "Proprietary"
+__version__ = "0.5.0"
+__license__ = "GPL v2.0"
 __author__ = "Jonathan Castro"
 __author_email__ = "Jonathan Castro, jonathancastrogonzalez at gmail dot com"
 
@@ -19,7 +18,7 @@ import psycopg2.extras
 
 class DBAdapter:
     def __init__(self):
-        self.conn = psycopg2.connect(database="pvulpix", user="postgres", password="seguridad", host="127.0.0.1", port="5432")
+        self.conn = psycopg2.connect(database="", user="", password="", host="127.0.0.1", port="5432")
 
     def close_connection(self):
         self.conn.close()

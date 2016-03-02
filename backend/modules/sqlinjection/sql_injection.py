@@ -1,6 +1,5 @@
-__version__ = "0.1"
-__copyright__ = "CopyRight (C) 2015 by Jonathan Castro"
-__license__ = "Proprietary"
+__version__ = "0.5.0"
+__license__ = "GPL v2.0"
 __author__ = "Jonathan Castro"
 __author_email__ = "Jonathan Castro, jonathancastrogonzalez at gmail dot com"
 
@@ -11,9 +10,9 @@ from bs4 import BeautifulSoup
 from urllib.parse import urljoin
 from urllib.parse import urlsplit
 
-from App.core.url import URL
-from App.core.url_list import URLlist
-from App.core.db_adapter import DBAdapter
+from backend.core.url import URL
+from backend.core.url_list import URLlist
+from backend.core.db_adapter import DBAdapter
 
 # For normal injection; search for login forms, try and if the login form is still there, that injection didn't work.
 
