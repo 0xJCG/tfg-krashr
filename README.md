@@ -70,7 +70,7 @@ npm start
 
 For more information about Krashr:
 
-Email: `jonathancastrogonzalez@gmail.com`
-Twitter: `https://twitter.com/0xJCG`
-LinkedIn: `https://es.linkedin.com/in/0xjcg`
-Dropbox: `https://goo.gl/xCeXXp`
+Email: jonathancastrogonzalez@gmail.com
+Twitter: https://twitter.com/0xJCG
+LinkedIn: https://es.linkedin.com/in/0xjcg
+Dropbox: https://goo.gl/xCeXXp
