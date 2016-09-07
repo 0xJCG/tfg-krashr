@@ -6,7 +6,15 @@ This application intends to help new software developers to make their webpages 
 
 It counts with a front-end, an API and a Python server to do the searches.
 
-## Getting Started and running the application
+## About the improvement of the app
+
+This repository won't be upgraded. All the improvements are going to be in three different repositories, one for each part of the app:
+
+* Front-end: https://github.com/0xJCG/krashr-frontend
+* API: https://github.com/0xJCG/krashr-api
+* Back-end: https://github.com/0xJCG/krashr-backend
+
+## Getting started and running the application
 
 To get you started you can simply clone the Krashr repository and install the dependencies. All the examples are writen using a Debian based operating system.
 
