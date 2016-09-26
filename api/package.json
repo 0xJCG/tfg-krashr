@@ -1,5 +1,5 @@
 {
-  "name": "Krashr API",
+  "name": "Krashr",
   "private": true,
   "version": "0.5.0",
   "description": "An API to search vulnerabilities within webpages",
