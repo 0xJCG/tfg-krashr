@@ -81,4 +81,4 @@ For more information about Krashr:
 * Email: jonathancastrogonzalez@gmail.com
 * Twitter: https://twitter.com/0xJCG
 * LinkedIn: https://es.linkedin.com/in/0xjcg
-* More documentation: https://goo.gl/xCeXXp
+* More documentation: https://goo.gl/YpgZmf
