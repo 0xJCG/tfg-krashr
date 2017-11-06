@@ -7,9 +7,9 @@ import json
 import requests
 from bs4 import BeautifulSoup
 
-from App.core.url import URL
-from App.core.url_list import URLlist
-from App.core.db_adapter import DBAdapter
+from backend.core.url import URL
+from backend.core.url_list import URLlist
+from backend.core.db_adapter import DBAdapter
 
 api = "http://localhost:3000/saveresult"
 
